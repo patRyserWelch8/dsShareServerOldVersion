@@ -49,6 +49,30 @@
   }
 }
 
+.check.encoding <- function(server, encoded)
+{
+  step    <- 1
+  max     <- 1
+  while (step <=  max)
+  {
+
+    print(step)
+    is.check.failed <- switch(step,
+                              identical(server, encoded))
+                      #.are.similar(server, encoded))
+
+    if (is.check.failed)
+    {
+      step <- step + 1000
+    }
+    else
+    {
+      step <- step + 1
+    }
+  }
+  return(step == (max+1))
+}
+
 # check a column
 
 #'@name isDataEncodedDS
@@ -59,17 +83,18 @@
 
 isDataEncodedDS <- function(data.server = NULL, data.encoded = NULL)
 {
-  outcome <- FALSE
+  outcome  <- FALSE
+  step     <- 0
+  print(1)
   if(.are.params.correct(data.server = data.server, data.encoded = data.encoded))
   {
+    print(21)
     # get data from global environment
-    server  <- get(data.server,  pos = 1)
-    encoded <- get(data.encoded, pos = 1)
-    print(.are.similar(server = server, encoded =encoded))
-    if (!.are.similar(server = server, encoded =encoded))
-    {
-      outcome <- TRUE
-    }
+    server   <- get(data.server,  pos = 1)
+    encoded  <- get(data.encoded, pos = 1)
+    outcome  <- .check.encoding(server, encoded)
+    print("---------")
+    print(outcome)
   }
   return(outcome)
 }
