@@ -15,29 +15,14 @@
 # check the values are similar; either identitical or nearly equal.
 .are.similar <- function(server, encoded)
 {
-
-  #check for identical values
-  is.identical    <- identical(x = server, y = encoded)
   is.nearly.equal <- FALSE
+  results         <- unlist(strsplit(results, " "))
+  rel.diff        <- as.numeric(results[length(results)])
+  print(rel.diff)
+  limit           <- getOption("dsShareServer.near.equal.limit")
+  is.nearly.equal <- (rel.diff > limit)
 
-  if (!is.identical)
-  {
-    results <- all.equal(target = server, current = encoded)
-    if(is.logical(results))
-    {
-      is.nearly.equal <- TRUE
-    }
-    else
-    {
-      results         <- unlist(strsplit(results, " "))
-      rel.diff        <- as.numeric(results[length(results)])
-      print(rel.diff)
-      limit           <- getOption("dsShareServer.near.equal.limit")
-      is.nearly.equal <- (rel.diff > limit)
-    }
-  }
-
-  return(is.identical || is.nearly.equal)
+  return(is.nearly.equal)
 }
 
 # check two data frames are not the same
@@ -51,26 +36,27 @@
 
 .check.encoding <- function(server, encoded)
 {
-  step    <- 1
-  max     <- 1
-  while (step <=  max)
+  step            <- 0
+  max             <- 3
+  is.check.failed <- TRUE
+  while (step <  max)
   {
-
+    print("------")
     print(step)
-    is.check.failed <- switch(step,
-                              identical(server, encoded))
-                      #.are.similar(server, encoded))
+    is.check.failed <- switch(step + 1,
+                              identical(server, encoded), #
+                              is.logical(all.equal(target = server, current = encoded)),
+                              .are.similar(server, encoded))
 
+    print(is.check.failed)
+    step <- step + 1
     if (is.check.failed)
     {
       step <- step + 1000
     }
-    else
-    {
-      step <- step + 1
-    }
   }
-  return(step == (max+1))
+  print(step == max)
+  return(step == max)
 }
 
 # check a column
@@ -84,9 +70,10 @@
 isDataEncodedDS <- function(data.server = NULL, data.encoded = NULL)
 {
   outcome  <- FALSE
-  step     <- 0
   print(1)
-  if(.are.params.correct(data.server = data.server, data.encoded = data.encoded))
+  param.correct <- .are.params.correct(data.server = data.server, data.encoded = data.encoded)
+  print(param.correct)
+  if(param.correct)
   {
     print(21)
     # get data from global environment
