@@ -22,7 +22,7 @@ test_that("incorrect arguments",
 
 test_that("correct arguments",
 {
-  expect_true(.are.params.correct(data.server = "D", data.encoded = "E"))
+  expect_true(.are.params.correct(data.server = "D", data.encoded = "E", data.held.in.server = "F"))
 })
 
 vector_a <- get("vector_A", pos = 1)
@@ -215,7 +215,6 @@ test_that("expected outcome restrictive",
   expect_false(.check.encoding(a, a, limit))
   expect_true(.check.encoding(a, b, limit))
   expect_false(.check.encoding(a, c,  limit))
-
 })
 
 
@@ -234,12 +233,15 @@ test_that("arguments are not correct",
 
 test_that("arguments are correct",
 {
-  expect_false(isDataEncodedDS(data.server  = "D", data.encoded = "E"))
+  expect_false(isDataEncodedDS(data.server  = "D", data.encoded = "E", data.held.in.server = "F"))
   expect_error(isDataEncodedDS(data.server  = "does not exist", data.encoded = "not yet created"))
   set.default.options.not.restrictive()
-  expect_false(isDataEncodedDS(data.server  = "D", data.encoded = "E"))
+  expect_false(isDataEncodedDS(data.server  = "D", data.encoded = "E",data.held.in.server = "F"))
+  expect_true(isDataEncodedDS(data.server  = "vector_B", data.encoded = "df_C",data.held.in.server = "F"))
 })
 
+if(FALSE)
+{
 
 test_that("expected outcome not restrictive",
 {
@@ -341,5 +343,7 @@ test_that("expected outcome not restrictive",
   expect_true(isDataEncodedDS(data.server = "df_A", data.encoded = "df_B"))
   expect_true(isDataEncodedDS(data.server = "df_B", data.encoded = "df_C"))
   expect_false(isDataEncodedDS(data.server = "df_A", data.encoded = "df_C"))
-})
 
+  expect_false(isDataEncodedDS(data.server = "vector_A", data.encoded = "df_C"))
+})
+}
