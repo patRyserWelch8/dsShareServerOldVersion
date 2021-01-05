@@ -14,7 +14,24 @@
        server         <- get(data.server, pos = 1)
        encoded        <- get(data.encoded, pos = 1)
        held.in.server <- get(data.held.in.server, pos = 1)
-       outcome        <- is.data.frame(server) || is.data.frame(encoded) || is.data.frame(held.in.server)
+
+       if (!is.data.frame(encoded))
+       {
+         stop("SERVER::ERR:SHARE::004")
+       }
+
+       if (!is.data.frame(held.in.server))
+       {
+         stop("SERVER::ERR:SHARE::005")
+       }
+
+       correct.format <- is.data.frame(server) || is.list(server) || is.matrix(server) || (length(server) > 1)
+       if(!correct.format)
+       {
+         stop("SERVER::ERR:SHARE::006")
+       }
+
+       outcome        <- correct.format || is.data.frame(encoded) || is.data.frame(held.in.server)
     }
   }
   return(outcome)
@@ -51,54 +68,62 @@
    }
 }
 
-
-
-# This helper function returns false if one of the check has failed. Otherwise, true if the data is sufficiently
+# This helper function returns a value between 1 and 6 if one of the check has failed. Otherwise, 7 if the data is sufficiently
 # encoded.
 # check no 1: identical - same R objects
-# check no 2: all.equal - different R objects with same values.
-# check no 3: some values from the servers are present in the encoded values
-# chekc no 4: some values are not numeric
-# check no 5: has values are NAs
-# check no 6: has some null values
-# check no 5: two datasets are significantly the same (t.test and mann.whitney, confidence level 0.99)
-# check no 7: encoded values are still in the limits sets by the data governance
-# check no 8: encoded values do not exceed the size of server data
-# check no 9: some of the data are present in one
+# check no 2: some values from the servers are present in the encoded values
+# chekc no 3: some values are not numeric
+# check no 4: two datasets are significantly the same (t.test and mann.whitney, confidence level 0.99)
+# check no 5: encoded values are still in the limits sets by the data governance
 .is.encoded <- function(server, encoded, limit)
 {
-  step            <- 0
-  max             <- 9
-  is.check.failed <- TRUE
+  #init function variables
+  step      <- 0
+  max       <- 5
+  is.failed <- FALSE
+  continue  <- TRUE
 
+  # convert into vectors data passed
   server.data     <- .convert.data(server)
   encoded.data    <- .convert.data(encoded)
-  print(length(server.data))
-  print(length(encoded.data))
 
-  while (step <  max)
+  # check encoding
+  while (continue)
   {
-    is.check.failed <- switch(step + 1,
-                              identical(server.data, encoded.data), # 1 identical variables
-                              is.logical(all.equal(target = server.data, current = encoded.data)), # 2all equql R objects
-                              any(server.data %in% encoded.data), #3 some values are present in both datasets
-                              !is.numeric(encoded.data), #4 has some non-numeric values
-                              any(is.na(server.data)) || any(is.na(encoded.data)), #5 some values are nas
-                              any(is.null(server.data)) || any(is.null(encoded.data)), #6
-                              .are.significant.same(server.data, encoded.data), #7 data are significantly the same at the point of centrality
-                              .are.values.in.limit(server.data, encoded.data, limit), #8 data are with the limit min, max, mean, median, IQR
-                              length(server.data) >= length(encoded.data)) #9 the size data on the server are greater or the same as the encoded data
-
-    step <- step + 1
-    if (is.check.failed)
-    {
-      step <- step + 1000
-    }
+    is.failed <- switch(step + 1,
+                        identical(server.data, encoded.data), # 1 identical variables
+                        any(server.data %in% encoded.data), #2 some values are present in both datasets
+                        !is.numeric(encoded.data), #3 has some non-numeric values
+                        .are.significant.same(server.data, encoded.data), # 4 data are significantly the same at the point of centrality
+                        .are.values.in.limit(server.data, encoded.data, limit)) #5 data are with the limit min, max, mean, median, IQR
+    step     <- step + 1
+    continue <- !is.failed & step < max
   }
-  return(step == max)
+
+  #!is.failed add 1, when  is.failed is false. Otherwise 0, when it is TRUE
+  return(step + !is.failed)
 }
 
-.check.encoding.data.server <- function(server, encoded, limit)
+# This function checks the server variable is encoded suitably.
+.check.encoding.variable <- function(server,encoded, limit)
+{
+  outcome <- FALSE
+  if (is.list(server) || is.matrix(server) || is.vector(server))
+  {
+      no_steps <- .is.encoded(server,encoded,limit)
+      outcome  <-  (no_steps == 6)
+  }
+  else if (is.data.frame(server))
+  {
+    outcome <- .check.encoding.data.frames
+  }
+
+  return(outcome)
+}
+
+# This function checks the a data frame is suitable encoded every column of a server is
+# checked after each column of the server dataframe.
+.check.encoding.data.frames <- function(server, encoded, limit)
 {
   is.encoded      <- TRUE
   classes_server  <- lapply(server,class)
@@ -106,15 +131,15 @@
 
   for(i in 2:ncol(encoded))
   {
-      print(paste0 ("----- i ", i, classes_encoded[[i]], print(" ----")))
       for(j in 2:ncol(server))
       {
-         print(paste0 ("j ", j, classes_encoded[[j]]))
-         if(grepl(classes_server[[i]], classes_encoded[[j]]))
+         if(grepl(classes_encoded[[i]], classes_server[[j]]))
          {
-            is.encoded <- .is.encoded(encoded[i],server[j],limit)
-            if(!is.encoded)
+            no_steps <- .is.encoded(encoded[i],server[j],limit)
+
+            if(no_steps < 6)
             {
+              is.encoded <- FALSE
               break
             }
          }
@@ -151,13 +176,46 @@
 }
 
 
-# check a column
+# check number of columns is greater for the encoded data.
+.check.dimension <- function(server, encoded)
+{
+  outcome <- FALSE
+  if (is.list(server) || is.matrix(server) || is.vector(server))
+  {
+    outcome <- ncol(encoded) > 1
+  }
+  else if (is.data.frame(server))
+  {
+    outcome <- ncol(encoded) > ncol(server)
+  }
+
+  return(outcome)
+
+}
+
 
 #'@name isDataEncodedDS
+#'@title check some R objects are suitably encoded
+#'@details This server function verifies the following rules are applied to the encoded data
+#'against (1) a server variable and (2) a datasets held in the server itself.
+#'
+#'1. No object is identical
+#'2. None of values the server variable is present in the encoded values
+#'3. All the values are numeric
+#'4. The server data and the encoded data are both significantly different (T-test and
+#'Mann-Whitney Test, p = 0.99)
+#'5. None of the values are within the limit set by the non-disclosure option dsShareServer.near.equal.limit
+#'
+#'Additionally the encoded data must hold this condition against the server variable:
+#'
+#'6. The encoded data has a greater number of columns than the server variable
+
 #'@param data.server  - character argument representing the name of a data frame with the original data
 #'@param data.encoded - character argument representing the name of a data frame with the encoded data
 #'@param data.held.in.server - character argument representing the datasets held in a DataSHIELD server as a data frame
+#'@return TRUE if the encoding is suitable. Otherwise false.
 #'@export
+#'
 isDataEncodedDS <- function(data.server = NULL, data.encoded = NULL, data.held.in.server = NULL)
 {
   is.encoded.data      <- FALSE
@@ -173,10 +231,13 @@ isDataEncodedDS <- function(data.server = NULL, data.encoded = NULL, data.held.i
     held.in.server <- get(data.held.in.server, pos = 1)
     limit          <- getOption("dsShareServer.near.equal.limit")
 
-    is.encoded.variable <- .is.encoded(server, encoded, limit)
-    if(is.encoded.variable)
+    if(.check.dimension(server, encoded))
     {
-      is.encoded.data <- .check.encoding.data.server(held.in.server,encoded,limit)
+      is.encoded.variable <- .check.encoding.variable(server, encoded, limit)
+      if(is.encoded.variable)
+      {
+        is.encoded.data <- .check.encoding.data.frames(held.in.server,encoded,limit)
+      }
     }
   }
   else

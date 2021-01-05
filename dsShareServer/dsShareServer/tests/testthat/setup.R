@@ -16,6 +16,7 @@
 
 print("setup.r")
 
+
 vector_A <- c(1:100)
 vector_B <- vector_A * 100000
 vector_C <- vector_A + 1
@@ -29,7 +30,7 @@ list_B   <- list(vector_B)
 list_C   <- list(vector_C)
 
 df_A     <- data.frame(vector_A,vector_B, list_C)
-df_B    <- data.frame(vector_A * -1000 , vector_B * -1000, vector_C * -1000)
+df_B    <- data.frame(vector_A * -10000000 , vector_B * -10000000, vector_C * -10000000)
 df_C     <- data.frame(vector_A + 1, vector_B + 1, vector_C + 1)
 
 assign("vector_A", vector_A, pos = 1)
@@ -52,7 +53,11 @@ assign("D", read.csv("data_files/DATASET1.csv", header = TRUE), pos = 1)
 assign("E", read.csv("data_files/DATASET2.csv", header = TRUE), pos = 1)
 assign("F", read.csv("data_files/DATASET3.csv", header = TRUE), pos = 1)
 
+assign("all.data", rbind(get("D", pos = 1), get("E", pos = 1), get("F", pos = 1)) , pos = 1)
 
+
+
+assign("PI", pi, pos = 1)
 
 
 
