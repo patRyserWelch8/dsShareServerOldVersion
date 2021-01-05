@@ -17,18 +17,18 @@
 
        if (!is.data.frame(encoded))
        {
-         stop("SERVER::ERR:SHARE::004")
+         stop("SERVER::ERR:SHARE::005")
        }
 
        if (!is.data.frame(held.in.server))
        {
-         stop("SERVER::ERR:SHARE::005")
+         stop("SERVER::ERR:SHARE::006")
        }
 
        correct.format <- is.data.frame(server) || is.list(server) || is.matrix(server) || (length(server) > 1)
        if(!correct.format)
        {
-         stop("SERVER::ERR:SHARE::006")
+         stop("SERVER::ERR:SHARE::007")
        }
 
        outcome        <- correct.format || is.data.frame(encoded) || is.data.frame(held.in.server)
@@ -41,16 +41,26 @@
 # It returns TRUE if it is signifincatly the same, and false if it is not.
 .are.significant.same <- function(server, encoded)
 {
+  outcome <- FALSE
   if (is.numeric(server) & is.numeric(encoded))
   {
-    t    <- t.test(server, encoded, conf.level = 0.99)
-    mann <- wilcox.test(server, encoded, conf.level = 0.99)
-    return(t$p.value >= 0.01 || mann$p.value >= 0.01)
+    if(all(is.na(server)) || all(is.na(encoded)))
+    {
+      outcome <- FALSE
+    }
+    else
+    {
+      t    <- t.test(server, encoded, conf.level = 0.99, na.action=na.omit)
+      mann <- wilcox.test(server, encoded, conf.level = 0.99)
+      outcome <- t$p.value >= 0.01 || mann$p.value >= 0.01
+    }
   }
   else
   {
-    stop("SERVER::ERR:SHARE::004")
+    stop("SERVER:ERR::SHARE::004")
   }
+  return(outcome)
+
 
 }
 
@@ -108,16 +118,16 @@
 .check.encoding.variable <- function(server,encoded, limit)
 {
   outcome <- FALSE
-  if (is.list(server) || is.matrix(server) || is.vector(server))
+
+  if (is.data.frame(server))
+  {
+    outcome <- .check.encoding.data.frames(server, encoded, limit)
+  }
+  else if (is.list(server) || is.matrix(server) || is.vector(server))
   {
       no_steps <- .is.encoded(server,encoded,limit)
       outcome  <-  (no_steps == 6)
   }
-  else if (is.data.frame(server))
-  {
-    outcome <- .check.encoding.data.frames
-  }
-
   return(outcome)
 }
 
@@ -133,16 +143,15 @@
   {
       for(j in 2:ncol(server))
       {
-         if(grepl(classes_encoded[[i]], classes_server[[j]]))
+         if(grepl(classes_encoded[[i]], classes_server[[j]])  )
          {
-            no_steps <- .is.encoded(encoded[i],server[j],limit)
-
+            no_steps <- .is.encoded(server[j],encoded[i],limit)
             if(no_steps < 6)
             {
               is.encoded <- FALSE
               break
             }
-         }
+          }
       }
   }
   return(is.encoded)
@@ -180,13 +189,19 @@
 .check.dimension <- function(server, encoded)
 {
   outcome <- FALSE
-  if (is.list(server) || is.matrix(server) || is.vector(server))
+  if (is.list(server))
   {
-    outcome <- ncol(encoded) > 1
+    lengths <- unlist(lapply(list_A,length))
+    outcome <- ncol(encoded) > 1 & all(lengths == nrow(encoded))
+  }
+  else if(is.vector(server))
+  {
+    outcome <- ncol(encoded) > 1 & length(server) == nrow(encoded)
   }
   else if (is.data.frame(server))
   {
-    outcome <- ncol(encoded) > ncol(server)
+
+    outcome <- ncol(encoded) > ncol(server) & nrow(encoded) == nrow(server)
   }
 
   return(outcome)

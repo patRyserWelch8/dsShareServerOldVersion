@@ -83,8 +83,8 @@ test_that("expected outcome",
   expect_true(.are.significant.same(server = vector_a, encoded = vector_c))
   expect_false(.are.significant.same(server = vector_b, encoded = vector_c))
 
-  expect_true(.are.significant.same(server = vector_a, encoded = matrix_a))
-  expect_true(.are.significant.same(server = vector_a, encoded = matrix_c))
+  expect_false(.are.significant.same(server = vector_a, encoded = matrix_a))
+  expect_false(.are.significant.same(server = vector_a, encoded = matrix_c))
   expect_false(.are.significant.same(server = vector_a, encoded = matrix_b))
 
   expect_true(.are.significant.same(server = matrix_a, encoded = matrix_a))
@@ -103,6 +103,8 @@ test_that("expected outcome",
 
   expect_false(.are.significant.same(server = vector_a, encoded = vector_b))
   expect_false(.are.significant.same(server = vector_a, encoded = matrix_b))
+
+  expect_error(.are.significant.same(server=rep(NA,100),encoded=rep(NA,100) ))
 })
 
 context("dsShareServer::isDataEncodeDS::expt::.check.dimension")
@@ -199,7 +201,7 @@ test_that("expected outcome not restrictive vector",
  expect_equal(.is.encoded(vector_a, vec_b_char, limit), 3) # character but data are different !
  expect_equal(.is.encoded(vector_a, vector_a_copy, limit), 4) #near equal significantly the same
  expect_equal(.is.encoded(vector_a, near_vector_a, limit), 5) #data are within limit
- expect_equal(.is.encoded(vector_a, vector_b[1:99], limit), 6) # same list
+ expect_equal(.is.encoded(vector_a, vector_b, limit), 6) # same list
 })
 
 
@@ -265,13 +267,21 @@ test_that("correct argument ",
   expect_true(.check.encoding.variable(matrix_a, df_b, limit))
   expect_false(.check.encoding.variable(matrix_a, df_c, limit))
 
-  expect_false(.check.encoding.variable(matrix_b, df_a, limit))
+  expect_true(.check.encoding.variable(matrix_b, df_a, limit))
   expect_true(.check.encoding.variable(matrix_b, df_b, limit))
   expect_true(.check.encoding.variable(matrix_b, df_c, limit))
 
   expect_false(.check.encoding.variable(matrix_c, df_a, limit))
   expect_true(.check.encoding.variable(matrix_c, df_b, limit))
   expect_false(.check.encoding.variable(matrix_c, df_c, limit))
+
+  expect_false(.check.encoding.variable(df_a, df_a, limit))
+  expect_false(.check.encoding.variable(df_b, df_b, limit))
+  expect_false(.check.encoding.variable(df_c, df_c, limit))
+
+  expect_false(.check.encoding.variable(df_c, df_a, limit))
+  expect_true(.check.encoding.variable(df_a, df_b, limit))
+  expect_true(.check.encoding.variable(df_b, df_c, limit))
 })
 
 
@@ -288,14 +298,6 @@ test_that("arguments are not correct",
   expect_error(isDataEncodedDS(data.encoded = "D"))
 })
 
-test_that("arguments are correct",
-{
-  expect_false(isDataEncodedDS(data.server  = "D", data.encoded = "E", data.held.in.server = "F"))
-  expect_error(isDataEncodedDS(data.server  = "does not exist", data.encoded = "not yet created"))
-  set.default.options.not.restrictive()
-  expect_false(isDataEncodedDS(data.server  = "D", data.encoded = "E",data.held.in.server = "F"))
-  expect_true(isDataEncodedDS(data.server  = "vector_B", data.encoded = "df_C",data.held.in.server = "F"))
-})
 
 test_that("expected outcome not restrictive",
 {

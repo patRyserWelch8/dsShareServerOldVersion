@@ -17,13 +17,13 @@
 print("setup.r")
 
 
-vector_A <- c(1:100)
+vector_A <- c(1:71)
 vector_B <- vector_A * 100000
 vector_C <- vector_A + 1
 
-matrix_A <- matrix(vector_A, 10, 10)
-matrix_B <- matrix(vector_B, 5, 20)
-matrix_C <- matrix(vector_C, 10, 10)
+matrix_A <- matrix(c(1:100), 10, 10)
+matrix_B <- matrix(c(1000:1100), 5, 20)
+matrix_C <- matrix(c(1:100), 10, 10)
 
 list_A   <- list(vector_A)
 list_B   <- list(vector_B)
@@ -52,6 +52,7 @@ assign("df_C", df_C, pos = 1)
 assign("D", read.csv("data_files/DATASET1.csv", header = TRUE), pos = 1)
 assign("E", read.csv("data_files/DATASET2.csv", header = TRUE), pos = 1)
 assign("F", read.csv("data_files/DATASET3.csv", header = TRUE), pos = 1)
+
 
 assign("all.data", rbind(get("D", pos = 1), get("E", pos = 1), get("F", pos = 1)) , pos = 1)
 
