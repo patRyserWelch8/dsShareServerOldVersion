@@ -3,15 +3,26 @@
 # Not recommended
 set.default.options.not.restrictive <- function()
 {
-  options(dsShareServer.near.equal.limit = 0.01)
+  options(sharing.near.equal.limit = 0.01)
 }
 
 set.default.options.restrictive <- function()
 {
-  options(dsShareServer.near.equal.limit = 1000000)
+  options(sharing.near.equal.limit = 1000000)
 }
 
 set.default.options.to.null <- function()
 {
   options(dsShareServer.near.equal.limit = NULL)
+}
+
+
+set.allowed <- function()
+{
+  options(param.sharing.allowed = 1)
+}
+
+set.not.allowed <- function()
+{
+  options(param.sharing.allowed = 0)
 }

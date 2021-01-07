@@ -1,7 +1,8 @@
 source('options/options_definitions.R')
+source("data_files/variables.R")
+set.default.options.to.null()
 
 context("dsShareServer::isDataEncodeDS::expt::are.params.corrrect")
-set.default.options.to.null()
 test_that("incorrect arguments",
 {
   expect_error(.are.params.correct())
@@ -13,11 +14,28 @@ test_that("incorrect arguments",
 set.default.options.not.restrictive()
 test_that("incorrect arguments",
 {
-  expect_false(.are.params.correct())
-  expect_false(.are.params.correct(data.server = "A"))
-  expect_false(.are.params.correct(data.server = "A", data.encoded = "B"))
+  expect_error(.are.params.correct())
+  expect_error(.are.params.correct(data.server = "A"))
+  expect_error(.are.params.correct(data.server = "A", data.encoded = "B"))
 
 })
+
+source("data_files/variables.R")
+
+test_that("correct arguments outcome true",
+{
+  expect_true(.are.params.correct(data.server = "D", data.encoded = "E", data.held.in.server = "F"))
+  expect_true(.are.params.correct(data.server = "vector_A", data.encoded = "E", data.held.in.server = "F"))
+  expect_true(.are.params.correct(data.server = "matrix_A", data.encoded = "E", data.held.in.server = "F"))
+  expect_true(.are.params.correct(data.server = "list_A", data.encoded = "E", data.held.in.server = "F"))
+  expect_true(.are.params.correct(data.server = "df_A", data.encoded = "E", data.held.in.server = "F"))
+  expect_error(.are.params.correct(data.server = "pi", data.encoded = "E", data.held.in.server = "F"))
+  expect_error(.are.params.correct(data.server = "df_A", data.encoded = "vector_A", data.held.in.server = "F"))
+})
+
+
+set.not.allowed()
+assignSharingSettingsDS()
 
 test_that("correct arguments outcome true",
 {
@@ -29,11 +47,10 @@ test_that("correct arguments outcome true",
 
   expect_error(.are.params.correct(data.server = "pi", data.encoded = "E", data.held.in.server = "F"))
   expect_error(.are.params.correct(data.server = "df_A", data.encoded = "vector_A", data.held.in.server = "F"))
-
-
-
 })
 
+set.allowed()
+assignSharingSettingsDS()
 test_that("correct arguments outcome errors",
 {
   expect_error(.are.params.correct(data.server = "pi", data.encoded = "E", data.held.in.server = "F"))
@@ -47,26 +64,7 @@ test_that("correct arguments outcome errors",
   expect_error(.are.params.correct(data.server = "df_A", data.encoded = "E", data.held.in.server = "list_C"))
 })
 
-vector_a <- get("vector_A", pos = 1)
-vector_b <- get("vector_B", pos = 1)
-vector_c <- get("vector_C", pos = 1)
-
-vector_a_copy <- vector_a - 0.00001
-vec_a_char    <- as.character(vector_A)
-vec_b_char    <- as.character(vector_B)
-
-matrix_a <- get("matrix_A", pos = 1)
-matrix_b <- get("matrix_B", pos = 1)
-matrix_c <- get("matrix_C", pos = 1)
-
-list_a <- get("list_A", pos = 1)
-list_b <- get("list_B", pos = 1)
-list_c <- get("list_C", pos = 1)
-
-df_a <- get("df_A", pos = 1)
-df_b <- get("df_B", pos = 1)
-df_c <- get("df_C", pos = 1)
-
+source("data_files/variables.R")
 
 
 context("dsShareServer::isDataEncodeDS::expt::.are.significant.same")
@@ -104,7 +102,7 @@ test_that("expected outcome",
   expect_false(.are.significant.same(server = vector_a, encoded = vector_b))
   expect_false(.are.significant.same(server = vector_a, encoded = matrix_b))
 
-  expect_error(.are.significant.same(server=rep(NA,100),encoded=rep(NA,100) ))
+  expect_error (.are.significant.same(server=rep(NA,100),encoded=rep(NA,100) ))
 })
 
 context("dsShareServer::isDataEncodeDS::expt::.check.dimension")

@@ -3,13 +3,15 @@
 .are.params.correct <- function(data.server = NULL, data.encoded = NULL, data.held.in.server = NULL)
 {
   outcome <- FALSE
-  if(is.null(.Options$dsShareServer.near.equal.limit))
+  if(is.null(.Options$sharing.near.equal.limit) || is.null(.Options$param.sharing.allowed))
   {
     stop("SERVER::ERR:SHARE::003")
   }
   else if(is.character(data.server) & is.character(data.encoded) & is.character(data.held.in.server))
   {
-    if(exists(data.server, where = 1)  & exists(data.encoded, where = 1) & exists(data.held.in.server, where = 1))
+    if(exists(data.server, where = 1) &
+       exists(data.encoded, where = 1) &
+       exists(data.held.in.server, where = 1))
     {
        server         <- get(data.server, pos = 1)
        encoded        <- get(data.encoded, pos = 1)
@@ -31,8 +33,15 @@
          stop("SERVER::ERR:SHARE::007")
        }
 
-       outcome        <- correct.format || is.data.frame(encoded) || is.data.frame(held.in.server)
+
+       outcome        <- correct.format &
+                         is.data.frame(encoded) &
+                         is.data.frame(held.in.server)
     }
+  }
+  else
+  {
+    stop("SERVER::ERR:SHARE::011")
   }
   return(outcome)
 }
@@ -184,7 +193,6 @@
   return(outcome)
 }
 
-
 # check number of columns is greater for the encoded data.
 .check.dimension <- function(server, encoded)
 {
@@ -208,6 +216,17 @@
 
 }
 
+#this function assign the setting "encoded.data" to the results of the checks
+.set.settings <- function(outcome = FALSE, data.encoded)
+{
+  if(exists("settings", where = 1))
+  {
+    settings                   <- get("settings", pos = 1)
+    settings$encoded.data      <- outcome
+    settings$encoded.data.name <- data.encoded
+    assign("settings", settings, pos = 1)
+  }
+}
 
 #'@name isDataEncodedDS
 #'@title check some R objects are suitably encoded
@@ -235,16 +254,16 @@ isDataEncodedDS <- function(data.server = NULL, data.encoded = NULL, data.held.i
 {
   is.encoded.data      <- FALSE
   is.encoded.variable  <- FALSE
+  outcome              <- FALSE
   param.correct        <- .are.params.correct(data.server, data.encoded, data.held.in.server )
 
-
-  if(param.correct)
+  if(param.correct & is.sharing.allowed())
   {
     # get data from global environment
     server         <- get(data.server,  pos = 1)
     encoded        <- get(data.encoded, pos = 1)
     held.in.server <- get(data.held.in.server, pos = 1)
-    limit          <- getOption("dsShareServer.near.equal.limit")
+    limit          <- getOption("sharing.near.equal.limit")
 
     if(.check.dimension(server, encoded))
     {
@@ -254,10 +273,13 @@ isDataEncodedDS <- function(data.server = NULL, data.encoded = NULL, data.held.i
         is.encoded.data <- .check.encoding.data.frames(held.in.server,encoded,limit)
       }
     }
+    outcome <- is.encoded.data & is.encoded.variable
+    .set.settings(outcome, data.encoded)
   }
   else
   {
     stop("SERVER::ERR:SHARE::002")
   }
-  return(is.encoded.data & is.encoded.variable)
+
+  return(outcome)
 }
