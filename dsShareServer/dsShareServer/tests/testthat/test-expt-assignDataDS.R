@@ -1,7 +1,7 @@
 source("definition_tests/def_getEncodedDataDS.R")
 source('definition_tests/def_sendEncodedDataDS.R')
 
-rm(ls(),pos = 1)
+rm(list = ls(pos = 1),pos = 1)
 context("assignDataDS::expt::no_settings")
 test_that("no_setting",
 {
@@ -13,7 +13,7 @@ test_that("no_setting",
   expect_error(assignDataDS("FM1","123,123",1,13,"WRING" ), "SERVER::ERR::PARAM::001")
   expect_error(assignDataDS("FM1","123,123",1,13,2.3,"INCORRECT" ), "SERVER::ERR::PARAM::001")
   expect_error(assignDataDS("FM1","123,123",1,13,2.3,5 ), "SERVER::ERR::PARAM::001")
-  
+
 })
 
 options(param.name.struct = "sharing")
@@ -31,7 +31,7 @@ test_that("not_allowed",
   expect_error(assignDataDS("FM1","123,123",1,13,"WRING" ), "SERVER::ERR::PARAM::001")
   expect_error(assignDataDS("FM1","123,123",1,13,2.3,"INCORRECT" ), "SERVER::ERR::PARAM::001")
   expect_error(assignDataDS("FM1","123,123",1,13,2.3,5 ), "SERVER::ERR::PARAM::001")
-  
+
 })
 
 options(param.name.struct = "sharing")
@@ -41,17 +41,17 @@ assignSharingSettingsDS()
 context("assignDataDS::expt::incorrect parameters")
 test_that("parameters",
 {
-  expect_error(assignDataDS(),"SERVER::ERR::PARAM::006")
-  expect_error(assignDataDS(1), "SERVER::ERR::PARAM::006")
-  expect_error(assignDataDS("FM1",TRUE), "SERVER::ERR::PARAM::005")
-  expect_error(assignDataDS("FM1","123,123","WRONG"),"SERVER::ERR::PARAM::006")
-  expect_error(assignDataDS("FM1","123,123",1,"WRONG" ), "SERVER::ERR::PARAM::005")
-  expect_error(assignDataDS("FM1","123,123",1,13,"WRING" ), "SERVER::ERR::PARAM::005")
-  expect_error(assignDataDS("FM1","123,123",1,13,2.3,"INCORRECT" ), "SERVER::ERR::PARAM::005")
+  expect_error(assignDataDS())
+  expect_error(assignDataDS(1))
+  expect_error(assignDataDS("FM1",TRUE))
+  expect_error(assignDataDS("FM1","123,123","WRONG"))
+  expect_error(assignDataDS("FM1","123,123",1,"WRONG" ))
+  expect_error(assignDataDS("FM1","123,123",1,13,"WRING" ))
+  expect_error(assignDataDS("FM1","123,123",1,13,2.3,"INCORRECT"))
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 
 pi_value = 1000
 assignSharingSettingsDS()
@@ -72,15 +72,15 @@ test_that("variables exists",
   .test.data.structure(a)
   sharing <- get("sharing", pos=1)
   expect_equal("received" %in% names(sharing),TRUE)
-  
-  
+
+
 })
 
 context("assignDataDS::expt::.create.matrix")
 test_that("variables exists",
 {
   .test.create.matrix.parameters.correct(as.character(a$payload), a$property.b)
-  .test.create.matrix.parameters.incorrect()
+  .test.create.matrix.parameters.incorrect() #NAs warning. testing incorrect situation
 })
 
 

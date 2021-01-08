@@ -23,12 +23,13 @@ test_that("correct fields",
 
 test_that("with options",
 {
+   set.allowed()
    set.default.options.not.restrictive()
    assignSharingSettingsDS()
-   settings <- get("settings", pos=1)
+   settings <- get("settings", pos = 1)
    expect_equal(settings$name.struct, getOption("param.name.struct"))
    expect_equal(settings$sharing.allowed, TRUE)
-   
+
    set.default.options.restrictive()
    assignSharingSettingsDS()
    settings <- get("settings", pos=1)
@@ -43,7 +44,7 @@ test_that("with options incorrect",
    settings <- get("settings", pos=1)
    expect_equal(settings$name.struct, "sharing")
    expect_equal(settings$sharing.allowed, FALSE)
-   
+
    set.default.options.incorrect.allowed()
    assignSharingSettingsDS()
    settings <- get("settings", pos=1)

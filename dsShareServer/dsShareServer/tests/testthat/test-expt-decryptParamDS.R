@@ -17,7 +17,7 @@ test_that("does not exist",
    expect_error(.get.encoded.param())
    expect_error(.is.encoded.param.valid())
    expect_error(decryptParamDS(), "SERVER::ERR::PARAM::001")
-   
+
 })
 
 
@@ -34,7 +34,7 @@ test_that("does exists",
    expect_equal(exists("settings", where = 1), TRUE)
    expect_equal(.get.encoded.param(),list())
    expect_equal(.is.encoded.param.valid(),FALSE)
-   expect_error(decryptParamDS(),"SERVER::ERR::PARAM::009")
+   expect_error(decryptParamDS())
    expect_equal(exists(settings$name.struct, where = 1), FALSE)
 })
 
@@ -43,7 +43,7 @@ test_that("does exists",
 #("Step 0")
 rm(list=ls(pos = 1),pos=1)
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 
 #("Step 0")
 assign("pi_value_1", 100.523, pos = 1)

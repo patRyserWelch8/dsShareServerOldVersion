@@ -84,7 +84,7 @@
 
   if (.has.correct.data())
   {
-    sharing         <- get(settings$name, pos = 1)
+    sharing         <- get(settings$name.struct, pos = 1)
     sharing         <-.init.coordinates.ratios(params, sharing)
     expected.fields <- c(settings$index_x, settings$index_y, settings$param_names)
     outcome         <- .is.outcome.valid(sharing,expected.fields)

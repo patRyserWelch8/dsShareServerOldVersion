@@ -1,6 +1,6 @@
 source("definition_tests/def_sharing_structure.R")
 source("definition_tests/def_process.R")
-source("options/options_definition.R")
+source("options/options_definitions.R")
 
 context("encryptDataDS::expt::incorrect_parameters")
 test_that("variables exists",
@@ -48,11 +48,11 @@ test_that("define.no.rows",
   expect_equal(is.integer(.define_no_rows()),TRUE)
   expect_equal(.define_no_rows() %% 2 == 1, TRUE)
   expect_equal(.define_no_rows() %% 2 == 0, FALSE)
-  
+
   #correct range
   no.rows <- .define_no_rows()
   expect_equal((no.rows >= 11 & no.rows <= 21),TRUE)
-  
+
 })
 assignSharingSettingsDS()
 settings <- get("settings", pos = 1)
@@ -60,14 +60,14 @@ settings <- get("settings", pos = 1)
 context("encryptDataDS::expt::.define_no_columns")
 test_that("numeric and odd number",
 {
-  
+
   expect_equal(is.integer(.define_no_columns()),TRUE)
   expect_equal(.define_no_columns() %% 2 == 1, TRUE)
 })
 
 test_that("correct range",
 {
- 
+
   no.columns <- .define_no_columns()
   expect_equal((no.columns >= 13 & no.columns <= 23),TRUE)
 })
@@ -101,11 +101,11 @@ test_that("no row",
   expect_equal(nrow(createdMatrix) == 11, TRUE)
   expect_equal(ncol(createdMatrix) == 13, TRUE)
   expect_equal(all(createdMatrix <= 1, TRUE),TRUE)
-}) 
+})
 
 test_that("no row correct",
 {
- 
+
   createdMatrix <- .createMatrixRUnif(no.rows = 12)
   expect_equal(nrow(createdMatrix) == 12, TRUE)
   expect_equal(ncol(createdMatrix) == 13, TRUE)
@@ -121,7 +121,7 @@ test_that("no column incorrect",
 })
 
 test_that("no row  and columns correct",
-{ 
+{
   createdMatrix <- .createMatrixRUnif(no.rows = 15, no.columns = 17)
   expect_equal(nrow(createdMatrix) == 15, TRUE)
   expect_equal(ncol(createdMatrix) == 17, TRUE)
@@ -133,17 +133,17 @@ test_that("no row  and columns, min value correct",
 {
   expect_warning(.createMatrixRUnif(no.rows = 15, no.columns = 17, min.value = 15))
 
-}) 
+})
 
-test_that("no row  and columns, min value incorrect", 
-{  
+test_that("no row  and columns, min value incorrect",
+{
 
   createdMatrix <- .createMatrixRUnif(no.rows = settings$min_rows+1, no.columns = settings$min_columns+1, min.value = -12)
   expect_equal(nrow(createdMatrix) == settings$min_rows+1, TRUE)
   expect_equal(ncol(createdMatrix) == settings$min_columns+1, TRUE)
   expect_equal(all(createdMatrix >= -12 & createdMatrix <= 1, TRUE),TRUE)
 })
- 
+
 test_that("no row  and columns, min value, max value correct",
 {
   createdMatrix <- .createMatrixRUnif(no.rows = 15, no.columns = 17, min.value = -12, max.value = 298)
@@ -153,7 +153,7 @@ test_that("no row  and columns, min value, max value correct",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 
 #("Step 0")
 assign("pi_value_1", 100000, pos = 1)
@@ -244,7 +244,7 @@ context("encryptDataDS::expt::.create.structure.master")
 test_that(".create.structure.master",
 {
   expected.list <- c("concealing","masking","no_columns","no_rows")
-  
+
   sharing <- .create.structure.master(min=1, max=2,no.rows=11, no.columns=13)
   expect_equal(is.list(sharing),TRUE)
   expect_equal(all(expected.list %in% names(sharing), TRUE), TRUE)
@@ -265,19 +265,19 @@ test_that("received matrix does not exist",
   expect_equal(is.list(sharing),TRUE)
   expect_equal(all(expected.list %in% names(sharing), FALSE), FALSE)
   expect_equal(length(sharing) == 0, TRUE)
-  
+
   expect_equal(is.vector(sharing$master.vector), FALSE)
   expect_equal(is.matrix(sharing$encoded.matrix), FALSE)
   expect_equal(is.matrix(sharing$masking.matrix), FALSE)
   expect_equal(is.matrix(sharing$concealing.matrix), FALSE)
-  
+
   a.list <- list(element = 3.1427)
   assign("sharing",a.list, pos=1)
   sharing <- .create.structure.receiver(4,23)
   expect_equal(is.list(sharing),TRUE)
   expect_equal(all(expected.list %in% names(sharing), FALSE), FALSE)
   expect_equal(length(sharing) == 0, TRUE)
-  
+
   expect_equal(is.vector(sharing$master.vector), FALSE)
   expect_equal(is.matrix(sharing$encoded.matrix), FALSE)
   expect_equal(is.matrix(sharing$masking.matrix), FALSE)
@@ -346,7 +346,7 @@ assign("receiver.4", get("sharing",pos = 1), pos = 1)
 test_that("step 6",
 {
    expect_equal(get("outcome", pos = 1), TRUE)
-   
+
 })
 
 #("step 7")

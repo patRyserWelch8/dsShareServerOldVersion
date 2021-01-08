@@ -4,7 +4,7 @@ source('definition_tests/def_sendEncodedDataDS.R')
 rm(list=ls(),pos=1)
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 0) 
+options(param.sharing.allowed = 0)
 assignSharingSettingsDS()
 
 context("assignCoordinatesDS::expt:: incorrect parameters::no_coordinates::not_allowed")
@@ -24,14 +24,14 @@ test_that("parameters",
 context("assignCoordinatesDS::expt:: correct parameters::no_coordinates::not_allowed")
 test_that("parameters",
 {
-  
-  expect_error(assignCoordinatesDS(header = "FM1", 
-                                   payload = "0.5,0.5,0.5,0.5", 
+
+  expect_error(assignCoordinatesDS(header = "FM1",
+                                   payload = "0.5,0.5,0.5,0.5",
                                    property.a = as.numeric(object.size("0.5,0.5,0.5, 0.5")),
                                    property.b = 2,
                                    property.c = as.numeric(Sys.time()) /567,
                                    property.d = 134893344), "SERVER::ERR::PARAM::001")
-  
+
 })
 
 context("assignCoordinatesDS::expt::.save_coordinates::no_coordinates")
@@ -40,7 +40,7 @@ test_that("no_coordinates",
   expect_equal(exists("sharing",where = 1), FALSE)
   .save.coordinates()
   expect_equal(exists("sharing",where = 1), FALSE)
-  
+
 })
 
 
@@ -55,13 +55,13 @@ context("assignCoordinatesDS::expt::.is.assigned.coordinates.correct::no_coordin
 test_that("no_coordinates",
 {
   expect_equal(.is.assigned.coordinates.correct(),FALSE)
-    
+
 })
 
 rm(list=ls(),pos=1)
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 
 
 #("Step 0")
@@ -96,7 +96,6 @@ master.2 <- get("sharing",pos=1)
 #("step 5")
 decryptDataDS()
 master.3 <- get("sharing",pos=1)
-
 assignParamSettingsDS(c("pi_value_1","pi_value_2","pi_value_3"))
 master.3.5 <- get("sharing",pos=1)
 
@@ -120,17 +119,17 @@ test_that("parameters",
 context("assignCoordinatesDS::expt:: correct parameters::with_coordinates")
 test_that("parameters",
 {
-  
+
      expect_equal(assignCoordinatesDS(header = "FM1",
      payload = "0.5,0.5,0.5, 0.5",
      property.a = as.numeric(object.size("0.5,0.5,0.5, 0.5")),
      property.b = 2,
      property.c = as.numeric(Sys.time()) /567,
      property.d = 134893344), TRUE)
-  
-  
-  
-  
+
+
+
+
 })
 
 context("assignCoordinatesDS::expt::.save_coordinates::with_coordinates")
@@ -152,20 +151,20 @@ test_that("with_coordinates",
 {
   result <- .create.data()
   expect_equal(rep(0,4),result)
-  
+
   result <- .create.data(c(0.5,0.5,0.5,0.5),2)
   expect_equal(rep(0,4),result)
-  
+
   result <- .create.data(c(0.5,0.5,0.5,0.5),"a")
   expect_equal(rep(0,4),result)
-  
+
   result <- .create.data("a;b;c;d",2)
   expect_equal(rep(0,4),result)
-  
+
   result <- .create.data("0.5;",1)
   expect_equal(rep(0,4),result)
-  
-  
+
+
   result <- .create.data("0.5;0.5;0.5;0.5",2)
   expect_equal(c(0.5,0.5,0.5,0.5),result)
 })

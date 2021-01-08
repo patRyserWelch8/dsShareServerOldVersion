@@ -10,7 +10,7 @@
 #'@export
 assignSharingSettingsDS <- function()
 {
-    settings <- list( sharing.allowed          = FALSE,
+    settings <- list( sharing.allowed          = 0,
                       sharing.near.equal.limit = 1000,
                       encoded.data             = FALSE,
                       encoded.data.name        = "no_name",
@@ -43,13 +43,13 @@ assignSharingSettingsDS <- function()
         }
       }
 
-      if(!is.null(getOption("param.sharing.allowed")))
+      if(!is.null(getOption("sharing.allowed")))
       {
-        if (getOption("param.sharing.allowed") == 0)
+        if (getOption("sharing.allowed") == 0)
         {
           settings$sharing.allowed <- FALSE
         }
-        else if (getOption("param.sharing.allowed") == 1)
+        else if (getOption("sharing.allowed") == 1)
         {
           settings$sharing.allowed <- TRUE
         }
@@ -57,12 +57,11 @@ assignSharingSettingsDS <- function()
         {
           settings$sharing.allowed <- FALSE
         }
-
       }
 
       if(!is.null(getOption("sharing.near.equal.limit")))
       {
-        settings$sharing.allowed <- getOption("sharing.near.equal.limit")
+        settings$sharing.near.equal.limit <- getOption("sharing.near.equal.limit")
       }
 
       assign("settings",settings,pos=1)
