@@ -18,7 +18,7 @@ is.sharing.allowed <- function()
 }
 
 #'@name encode.data.with.sharing
-#'@title  encode some obscured data to be exchanged from one server to another.
+#'@title  encode some obscured  data to be exchanged from one server to another.
 #'@description This server function can only be used with some encrypted data. It
 #'format the data prior its transfer to a client-side function.
 #'@param encrypted.data - data to be encoded
@@ -72,7 +72,10 @@ encode.data.no.sharing <- function()
   return(return.value)
 }
 
-
+#'@name are.params.created
+#'@title check the some variables considered as parameters are created on a server
+#'@details This is a helper function. It cannot be called directly from any client-side
+#'function.
 are.params.created <- function(param_names = c())
 {
   params.exist     <- FALSE
@@ -94,3 +97,85 @@ are.params.created <- function(param_names = c())
   return(params.exist & all.numeric)
 }
 
+#'@name get.transfer
+#'@title returns the transfer list if it is correctly setup
+#'@details This is a helper function. It cannot be called directly from any client-side
+#'function.
+#'@notes  Throws error "SERVER::ERR:SHARE::013" if transfer is not created on server.
+#'"Throws "SERVER::ERR:SHARE::014" if the transfer list is created on a server, with the incorrect field.
+get.transfer <- function(settings)
+{
+  transfer <- NULL
+  if(exists(settings$name.struct.transfer, where = 1))
+  {
+    transfer      <- get(settings$name.struct.transfer, pos = 1)
+    correct.field <- settings$current_row %in% names(transfer)
+    if(!correct.field)
+    {
+      transfer <- list()
+      transfer[[settings$current_row]] = 1
+    }
+  }
+  else
+  {
+    transfer <- list()
+    transfer[[settings$current_row]] = 1
+  }
+  return(transfer)
+}
+
+#'@name are.encoded.data.and.settings.suitable
+#'@title check some settings encoded data and settings are suitable for continuing transferring
+#'@details This is a helper function. It cannot be called directly from any client-side
+#'function.
+#'@description  It checks the sharing for the following criteria:
+#' 0. sharing is allowed
+#' 1. the encoded data is the same as previously stated in the encoding check
+#' 2. encoded data exists
+#' 3. encoded data is a data frame
+#' 4. the data encoded is character
+#'@notes Throws the following errors:
+#'"SERVER::ERR:SHARE::002"  sharing is not allowed or the disclosure setting has not been set to 0 or 1
+#'"SERVER::ERR:SHARE::005"  data.encoded does not exists on the server
+#'"SERVER::ERR:SHARE::008"  data.encoded is not the same R object as previously validated \source{isDataEncodedDS}
+#'"SERVER::ERR:SHARE::009"  data.encoded has yet to be validated by \source{isDataEncodedDS}
+#'"SERVER::ERR:SHARE::010"  data.encoded is not a character vector
+#'
+are.arg.and.settings.suitable <- function(data.encoded)
+{
+  outcome <- FALSE
+  if(is.sharing.allowed())
+  {
+    settings  <- get("settings", pos = 1)
+
+    if(!is.character(data.encoded))
+    {
+      stop("SERVER::ERR:SHARE::010")
+    }
+
+    same.name <- identical(settings$encoded.data.name,data.encoded)
+    data.exists <- exists(data.encoded, where = 1)
+    if(!data.exists)
+    {
+      stop("SERVER::ERR:SHARE::009")
+    }
+
+    correct.format <- is.data.frame(get(data.encoded, pos = 1))
+    if(!correct.format)
+    {
+      stop("SERVER::ERR:SHARE::005")
+    }
+
+    same.name <- identical(settings$encoded.data.name,data.encoded)
+    if(!same.name)
+    {
+      stop("SERVER::ERR:SHARE::008")
+    }
+    outcome <- same.name & data.exists & correct.format
+  }
+  else
+  {
+    stop("SERVER::ERR:SHARE::002")
+  }
+  return(outcome)
+}

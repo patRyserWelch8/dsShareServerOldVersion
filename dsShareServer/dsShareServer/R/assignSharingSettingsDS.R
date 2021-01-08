@@ -15,6 +15,8 @@ assignSharingSettingsDS <- function()
                       encoded.data             = FALSE,
                       encoded.data.name        = "no_name",
                       name.struct              = "sharing",
+                      name.struct.transfer     = "transfer",
+                      current_row              = "current_row",
                       masking                  = "masking",
                       concealing               = "concealing",
                       received                 = "received",

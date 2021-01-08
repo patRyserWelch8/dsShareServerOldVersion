@@ -108,7 +108,6 @@
 #'@export
 assignParamSettingsDS <- function(param_names = "")
 {
-
   if (is.sharing.allowed())
   {
     param_names.decoded <- unlist(strsplit(as.character(param_names),";"))
