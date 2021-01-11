@@ -10,11 +10,12 @@ test_that("no setting",
 
 
 context("is.sharing.allowed::smk")
-test_that("with setting",
+test_that("with setting not allowed",
 {
   options(param.name.struct = "sharing")
-  options(param.sharing.allowed = 0) 
+  options(sharing.allowed = 0)
   assignSharingSettingsDS()
+  expect_true(exists("settings", where = 1))
   expect_false(is.sharing.allowed())
 })
 
@@ -24,8 +25,9 @@ context("is.sharing.allowed::smk")
 test_that("with setting and allowed",
 {
   options(param.name.struct = "sharing")
-  options(param.sharing.allowed = 1) 
+  options(sharing.allowed = 1)
   assignSharingSettingsDS()
+  expect_true(exists("settings", where = 1))
   expect_true(is.sharing.allowed())
 })
 

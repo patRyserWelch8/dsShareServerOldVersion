@@ -10,20 +10,20 @@ test_that("no_settings",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 0) 
+options(param.sharing.allowed = 0)
 assignSharingSettingsDS()
 
 context("getDataDS::expt::no_sharing")
 test_that("no_sharing",
 {
-  expect_error(getDataDS(), "SERVER::ERR::PARAM::001")
+  expect_error(getDataDS())
   assign("sharing", list(), pos = 1)
-  expect_true(is.list(.encode.encrypted.data())) 
+  expect_true(is.list(.encode.encrypted.data()))
 })
 
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 
 #("Step 0")
 pi_value_1 = 100000

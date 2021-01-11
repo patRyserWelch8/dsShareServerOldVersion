@@ -6,20 +6,20 @@ rm(list=ls(pos = 1),pos=1)
 
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 0) 
+options(param.sharing.allowed = 0)
 assignSharingSettingsDS()
 
 context("getCoordinatesDS::expt::no_sharing_allowed")
 test_that("no_sharing_allowed",
 {
-  expect_error(getCoordinatesDS(), "SERVER::ERR::PARAM::001")
+  expect_error(getCoordinatesDS())
   assign("sharing", list(), pos = 1)
-  expect_true(is.list(.encode.encrypted.data())) 
+  expect_true(is.list(.encode.encrypted.data()))
 })
 
 rm(list=ls(),pos=1)
 options(param.name.struct = "sharing-test")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 assignSharingSettingsDS()
 
 context("getCoordinatesDS::expt::no_sharing_structure")
@@ -27,7 +27,7 @@ test_that("no_sharing",
 {
   expect_error(getCoordinatesDS(), "SERVER::ERR::PARAM::003")
   assign("sharing-test", list(), pos = 1)
-  expect_true(is.list(.encode.encrypted.data())) 
+  expect_true(is.list(.encode.encrypted.data()))
 })
 
 
@@ -35,7 +35,7 @@ test_that("no_sharing",
 rm(list=ls(),pos=1)
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 
 
 #print("Step 0")

@@ -10,7 +10,7 @@
 is.sharing.allowed <- function()
 {
   outcome <- FALSE
-  if (exists("settings",where=1))
+  if (exists("settings",where = 1))
   {
     outcome <- settings$sharing.allowed
   }
@@ -78,18 +78,20 @@ encode.data.no.sharing <- function()
 #'function.
 are.params.created <- function(param_names = c())
 {
-  params.exist     <- FALSE
-  all.numeric <- FALSE
+  params.exist <- FALSE
+  all.numeric  <- FALSE
 
   if (length(param_names) > 0)
   {
     if(length(param_names) >=1  & is.character(param_names) )
     {
-      list.var <- ls(pos = 1)
+      list.var      <- ls(pos = 1)
       params.exist  <- all(param_names %in% list.var)
       if(params.exist)
       {
-        params <-  mget(x = param_names, envir = as.environment(1))
+        #get the object and check for numerical values. mget checks for the existence and
+        #retrieve object.
+        params      <-  mget(x = param_names, envir = as.environment(1))
         all.numeric <- all(sapply(params, is.numeric))
       }
     }

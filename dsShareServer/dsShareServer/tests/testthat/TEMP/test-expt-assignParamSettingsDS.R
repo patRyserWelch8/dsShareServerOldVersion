@@ -21,9 +21,7 @@ context("assignParamSettingsDS::expt::.has.correct.data")
 test_that("everyting is not correct",
 {
     expect_error(.has.correct.data())
-    
 })
-
 
 context("assignParamSettingsDS::expt::.init.coordinates.ratios")
 test_that("everyting is incorrect",
@@ -35,17 +33,17 @@ test_that("everyting is incorrect",
 
 
 options(param.name.struct = "sharing_setting")
-options(param.sharing.allowed = 0) 
+options(param.sharing.allowed = 0)
 
 assignSharingSettingsDS()
 
 context("assignParamSettingsDS::smk::not_allowed_sharing")
 test_that("not allowed sharingt",
 {
-    
+
   expect_equal(exists("settings", where = 1), TRUE)
-  expect_error(assignParamSettingsDS(),"SERVER::ERR::PARAM::001")
-  expect_error(assignParamSettingsDS(123),"SERVER::ERR::PARAM::001")
+  expect_error(assignParamSettingsDS())
+  expect_error(assignParamSettingsDS(123))
   expect_equal(are.params.created(param_names = c("first_var_X")), FALSE)
   expect_equal(are.params.created(param_names = c("first_var_X", "second_var_X")),FALSE)
   expect_equal(are.params.created(param_names = c("first_var_X", "second_var_X","third_var_X")),FALSE)
@@ -60,7 +58,7 @@ context("assignParamSettingsDS::expt::.has.correct.data")
 test_that("not allowed sharing",
 {
   expect_equal(.has.correct.data(), FALSE)
-  
+
 })
 
 context("assignParamSettingsDS::expt::.are.params.created")
@@ -72,7 +70,7 @@ test_that("not allowed sharing",
   expect_equal(are.params.created(param_names = c("first_var", 1)),FALSE)
   expect_equal(are.params.created(param_names = c("first_var", "second_var_X")),FALSE)
   expect_equal(are.params.created(param_names = "hello"),FALSE)
-  expect_equal(are.params.created(param_names = 1),FALSE) 
+  expect_equal(are.params.created(param_names = 1),FALSE)
   expect_equal(are.params.created(param_names = list()),FALSE)
 })
 
@@ -85,7 +83,7 @@ test_that("everyting is incorrect",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 
 assignSharingSettingsDS()
 
@@ -126,8 +124,8 @@ test_that("everything is correct",
 {
   expect_equal(exists("settings", where = 1), TRUE)
   expect_equal(assignParamSettingsDS("first_var"),TRUE)
-  expect_error(assignParamSettingsDS("first_var;second_var"),"SERVER::ERR::PARAM::008")
-  
+  expect_true(assignParamSettingsDS("first_var;second_var"))
+
 })
 
 context("assignParamSettingsDS::expt::.has.correct.data")
@@ -146,20 +144,20 @@ test_that("everyting is correct",
   expect_equal("index_y" %in% names(sharing), TRUE)
   expect_equal("param_names" %in% names(sharing), TRUE)
   expect_equal(length(sharing$index_x), 1)
-  
+
   sharing <- .init.coordinates.ratios(param_names = c("first_var","second_var"), get("sharing",pos = 1))
   expect_equal("index_x" %in% names(sharing), TRUE)
   expect_equal("index_y" %in% names(sharing), TRUE)
   expect_equal("param_names" %in% names(sharing), TRUE)
   expect_equal(length(sharing$index_x), 2)
-  
+
   sharing <- .init.coordinates.ratios(param_names = c("first_var","second_var","third_var"), get("sharing",pos = 1))
   expect_equal("index_x" %in% names(sharing), TRUE)
   expect_equal("index_y" %in% names(sharing), TRUE)
   expect_equal("param_names" %in% names(sharing), TRUE)
   expect_equal(length(sharing$index_x), 3)
-  
-  
+
+
 })
 
 
@@ -167,19 +165,19 @@ context("assignParamSettingsDS::expt::.create_vector")
 test_that("correct and incorrect arguments",
 {
    outcome <- .create.vector(123)
-  
+
    outcome <- .create.vector("")
    expect_equal(length(outcome),0)
-   
+
    outcome <- .create.vector("a")
    expect_equal(length(outcome),1)
-   
+
    outcome <-  outcome <- .create.vector("a;b")
    expect_equal(length(outcome),2)
-   
+
    outcome <- .create.vector("a;b;c;d;e")
    expect_equal(length(outcome),5)
-  
-  
+
+
 })
 

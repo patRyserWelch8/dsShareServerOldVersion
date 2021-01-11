@@ -15,7 +15,7 @@ test_that("does not exist",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 0)
+options(sharing.allowed = 0)
 assignSharingSettingsDS()
 settings <- get("settings",pos = 1)
 
@@ -30,7 +30,7 @@ test_that("not_allowed",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1)
+options(sharing.allowed = 1)
 assignSharingSettingsDS()
 settings <- get("settings",pos = 1)
 

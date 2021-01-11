@@ -30,6 +30,7 @@ test_that("variables exists",
 
 
 set.default.options.restrictive
+options(sharing.allowed = 0)
 assignSharingSettingsDS()
 
 context("encryptDataDS::expt::not_allowed_to_share")

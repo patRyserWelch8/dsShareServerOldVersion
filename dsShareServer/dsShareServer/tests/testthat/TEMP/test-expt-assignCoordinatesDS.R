@@ -61,7 +61,7 @@ test_that("no_coordinates",
 rm(list=ls(),pos=1)
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1)
+options(sharing.allowed = 1)
 
 
 #("Step 0")
@@ -126,10 +126,6 @@ test_that("parameters",
      property.b = 2,
      property.c = as.numeric(Sys.time()) /567,
      property.d = 134893344), TRUE)
-
-
-
-
 })
 
 context("assignCoordinatesDS::expt::.save_coordinates::with_coordinates")

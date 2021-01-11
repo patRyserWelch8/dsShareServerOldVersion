@@ -75,13 +75,10 @@
   return(outcome)
 }
 
-.assignParamSettings <- function(param_names = "")
+.assignParamSettings <- function(param_names = "", settings)
 {
   outcome <-FALSE
-
-
   params <- .create.vector(param_names)
-
   if (.has.correct.data())
   {
     sharing         <- get(settings$name.struct, pos = 1)
@@ -91,7 +88,7 @@
 
     if(outcome)
     {
-      assign(settings$name, sharing, pos = 1)
+      assign(settings$name.struct, sharing, pos = 1)
     }
   }
   return(outcome)
@@ -111,9 +108,13 @@ assignParamSettingsDS <- function(param_names = "")
   if (is.sharing.allowed())
   {
     param_names.decoded <- unlist(strsplit(as.character(param_names),";"))
+    settings            <- get("settings", pos = 1)
+
     if(are.params.created(param_names.decoded))
     {
-      return(.assignParamSettings(param_names))
+      outcome <- .assignParamSettings(param_names, settings)
+
+      return(outcome)
     }
     else
     {

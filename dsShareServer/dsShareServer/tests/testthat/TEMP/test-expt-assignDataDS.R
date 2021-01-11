@@ -17,7 +17,7 @@ test_that("no_setting",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 0)
+options(sharing.allowed = 0)
 assignSharingSettingsDS()
 
 context("assignDataDS::expt::not_allowed")
@@ -35,7 +35,7 @@ test_that("not_allowed",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1)
+options(sharing.allowed = 1)
 assignSharingSettingsDS()
 
 context("assignDataDS::expt::incorrect parameters")
@@ -51,7 +51,7 @@ test_that("parameters",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1)
+options(sharing.allowed = 1)
 
 pi_value = 1000
 assignSharingSettingsDS()
