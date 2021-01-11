@@ -31,12 +31,6 @@ while(!EOF)
 {
   data.transfer <- nextDS("df_B",10)
   EOF <- isEndOfDataDS(data_encoded = "df_B")
-  print("==== ")
-  print(data.transfer)
-  print(get("transfer", pos  = 1))
-
-  print("==== ")
-
 }
 
 

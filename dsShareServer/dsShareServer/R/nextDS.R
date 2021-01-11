@@ -55,4 +55,8 @@ nextDS <- function(data_encoded = NULL, no.rows = 1000)
       return(data.transfer)
     }
   }
+  else
+  {
+    stop("SERVER::ERR::SHARING::016")
+  }
 }

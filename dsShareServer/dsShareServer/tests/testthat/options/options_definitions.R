@@ -48,10 +48,10 @@ set.default.options.to.null <- function()
 
 set.allowed <- function()
 {
-  options(param.sharing.allowed = TRUE)
+  options(sharing.allowed = TRUE)
 }
 
 set.not.allowed <- function()
 {
-  options(param.sharing.allowed = 0)
+  options(sharing.allowed = 0)
 }

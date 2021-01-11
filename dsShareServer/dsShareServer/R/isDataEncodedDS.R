@@ -3,7 +3,7 @@
 .are.params.correct <- function(data.server = NULL, data.encoded = NULL, data.held.in.server = NULL)
 {
   outcome <- FALSE
-  if(is.null(.Options$sharing.near.equal.limit) || is.null(.Options$param.sharing.allowed))
+  if(is.null(.Options$sharing.near.equal.limit) || is.null(.Options$sharing.allowed))
   {
     stop("SERVER::ERR:SHARE::003")
   }
