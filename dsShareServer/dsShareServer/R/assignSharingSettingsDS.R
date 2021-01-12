@@ -43,6 +43,15 @@ assignSharingSettingsDS <- function()
         }
       }
 
+    if (!is.null(getOption("transfer.name.struct")))
+    {
+      if(is.character(getOption("transfer.name.struct")) &
+         !identical(getOption("transfer.name.struct"), ""))
+      {
+        settings$name.struct.transfer <- getOption("transfer.name.struct")
+      }
+    }
+
       if(!is.null(getOption("sharing.allowed")))
       {
         if (getOption("sharing.allowed") == 0)

@@ -38,7 +38,7 @@ source("data_files/variables.R")
 assignSharingSettingsDS()
 data_encoded <- isDataEncodedDS(data.server = "vector_A", data.encoded = "df_B", data.held.in.server = "all.data")
 
-
+rm(list = "transfer", pos = 1)
 test_that("option set, allowed",
 {
   expect_error(isEndOfDataDS())
@@ -48,6 +48,11 @@ test_that("option set, allowed",
   expect_error(isEndOfDataDS(data_encoded = "F")) #exist but was not encoded data as above
   expect_error(isEndOfDataDS(data_encoded = "H")) #does not exist
 })
+
+if (exists("transfer", where = 1))
+{
+  rm(list = "transfer", pos = 1)
+}
 
 test_that("option set, allowed",
 {

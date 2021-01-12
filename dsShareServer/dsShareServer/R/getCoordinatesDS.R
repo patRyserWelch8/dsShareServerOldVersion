@@ -9,7 +9,7 @@
     {
       sharing      <- get(settings$name.struct,pos = 1)
       value.exists <- all(c(settings$index_x, settings$index_y) %in% names(sharing))
-      
+
       if(value.exists)
       {
         data           <- c(sharing[[settings$index_x]],sharing[[settings$index_y]])
@@ -21,7 +21,7 @@
         index <- runif(1, min = 1, max= 100)
         return.value <- encode.data.with.sharing(encrypted.data, length(sharing[[settings$index_x]]), index)
       }
-    }  
+    }
   }
   return(return.value)
 }
@@ -32,11 +32,11 @@
 #'@return a list made of a header, a payload, and four properties[a-d]
 #'@details Some encoded data are transformed into a suitable format to be transferred from a DataSHIELD server to a DataSHIELD client. The property.a indicates
 #'the size of the data at encoding time. Property b is the number of coordinates and property c a timestamp. property d a random number.
-#'@seealso \link[dsParamServer]{assignDataDS} \link[dsParamServer]{getCoordinatesDS}
+#'@seealso \link[dsShareServer]{assignDataDS} \link[dsShareServer]{getCoordinatesDS}
 #'@export
 getCoordinatesDS <- function()
-{ 
-  
+{
+
   if (is.sharing.allowed())
   {
     if(!exists(settings$name.struct,where=1))
@@ -48,7 +48,7 @@ getCoordinatesDS <- function()
       encoded.data <- .compute.coordinates()
       if(identical(encoded.data$header, "FM2"))
       {
-          stop("SERVER::ERR::PARAM::004") 
+          stop("SERVER::ERR::PARAM::004")
       }
       else
       {
@@ -58,9 +58,9 @@ getCoordinatesDS <- function()
   }
   else
   {
-    stop("SERVER::ERR::PARAM::001")
+    stop("SERVER::ERR::SHARING::001")
   }
-  
-  
-  
+
+
+
 }

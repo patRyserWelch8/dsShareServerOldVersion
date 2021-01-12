@@ -5,7 +5,7 @@
   {
     if (is.list(get(settings$name.struct, pos=1)))
     {
-        outcome <- get(settings$name.struct, pos=1) 
+        outcome <- get(settings$name.struct, pos=1)
     }
   }
   return(outcome)
@@ -14,9 +14,9 @@
 .is.shared.secrets.valid <- function(shared.secrets)
 {
   correct <- FALSE
-  expected.list <- c(settings$encrypted,settings$masking,settings$received, 
+  expected.list <- c(settings$encrypted,settings$masking,settings$received,
                      settings$decrypted, settings$index_x, settings$index_y, settings$param_names)
- 
+
   if (is.list(shared.secrets))
   {
     list.attributes <- names(shared.secrets)
@@ -31,14 +31,14 @@
 {
   #use existsDS...
   outcome <- FALSE
- 
+
   if(is.character(param_name))
   {
     if(exists(param_name,where=1))
     {
       param <- get(param_name, pos=1)
       if(is.numeric(param))
-      { 
+      {
         outcome <- TRUE
       }
     }
@@ -49,16 +49,16 @@
 .compute.encoding.ratio <- function(decrypted.matrix = NULL,param_name, column, row)
 {
   outcome <- 0
-  
+
   if (is.matrix(decrypted.matrix) & is.character(param_name))
   {
     if (exists(param_name, where = 1))
     {
       param <- get(param_name, pos=1)
-      
+
       if ((nrow(decrypted.matrix) %% 2) == 1 &  (ncol(decrypted.matrix) %% 2) == 1)
       {
-       
+
         dot.product    <- decrypted.matrix[row, column]
         outcome        <- param/dot.product
       }
@@ -83,15 +83,15 @@
 .is.encrypted.structure.valid <- function()
 {
   correct <- FALSE
-  
+
   if(exists("sharing",where=1))
   {
       sharing       <- get("sharing",pos=1)
-      
+
       if (is.list(sharing))
       {
         list.attributes  <- names(sharing)
-        correct <- settings$data %in% list.attributes  
+        correct <- settings$data %in% list.attributes
       }
   }
   return(correct)
@@ -118,18 +118,18 @@
 .complete.encryption <- function(sharing)
 {
   outcome <- FALSE
-  
+
   if(.is.shared.secrets.valid(sharing))   #.is.param.valid(param_name) &
   {
-    #decrypt encrypted matrix to find concealed values: shared secret         
-    #concealing.matrix <- .compute.concealing.matrix() 
+    #decrypt encrypted matrix to find concealed values: shared secret
+    #concealing.matrix <- .compute.concealing.matrix()
     no.params <- length(sharing[[settings$param_names]])
     data <- list()
     for (index in 1:no.params)
     {
       data[[index]] <- .encrypt.param(index,sharing[[settings$concealing]])
     }
-    
+
     sharing[[settings$data]] <- data
     assign(settings$name.struct,sharing, pos=1)
     outcome <- .is.encrypted.structure.valid()
@@ -138,14 +138,14 @@
 }
 
 #'@name encryptParamDS
-#'@title  encrypt a server parameter 
+#'@title  encrypt a server parameter
 #'@description This server function encrypts a given parameter using a dot product and two shared secrets.
 #'@export
-encryptParamDS <- function() 
+encryptParamDS <- function()
 {
-   
+
    if (is.sharing.allowed() )
-   { 
+   {
      sharing <- .get.shared.secrets()
      if(are.params.created(sharing[[settings$param_names]]))
      {
@@ -153,14 +153,14 @@ encryptParamDS <- function()
      }
      else
      {
-       stop("SERVER::ERR::PARAM::008")
+       stop("SERVER::ERR::SHARING::008")
      }
    }
    else
    {
-     stop("SERVER::ERR::PARAM::001")
+     stop("SERVER::ERR::SHARING::001")
    }
-   
+
 }
 
 

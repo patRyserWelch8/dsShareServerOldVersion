@@ -7,7 +7,7 @@ test_that("no_setting",
     rm("settings",pos=1)
   }
   expect_equal(exists("settings",where = 1),FALSE)
-  expect_error(removeEncryptingDataDS(),"SERVER::ERR::PARAM::001")
+  expect_error(removeEncryptingDataDS())
   expect_error(.get.sharing.data())
 })
 #"Step 0"
@@ -26,7 +26,7 @@ test_that("no_sharing",
 })
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1) 
+options(param.sharing.allowed = 1)
 
 #("Step 0")
 rm(list=ls(pos = 1),pos=1)
@@ -86,7 +86,7 @@ test_that("computations",
   sharing <- get("sharing", pos = 1)
 
   expect_equal(length(sharing),11)
-  expect_equal(all(c(settings$data,settings$no_columns, settings$no_rows, 
+  expect_equal(all(c(settings$data,settings$no_columns, settings$no_rows,
                      settings$index_x, settings$index_y, settings$param_names) %in% names(sharing)), TRUE)
 })
 

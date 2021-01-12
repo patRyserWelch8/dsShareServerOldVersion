@@ -5,10 +5,10 @@ source("options/options_definitions.R")
 context("encryptDataDS::expt::incorrect_parameters")
 test_that("variables exists",
 {
-  expect_error(encryptDataDS(123,134),"SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS("123","134"), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS(TRUE,"134"), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS("123",FALSE), "SERVER::ERR::PARAM::002")
+  expect_error(encryptDataDS(123,134))
+  expect_error(encryptDataDS("123","134"))
+  expect_error(encryptDataDS(TRUE,"134"))
+  expect_error(encryptDataDS("123",FALSE))
 })
 
 context("encryptDataDS::expt::no_settings")
@@ -18,14 +18,14 @@ test_that("variables exists",
   {
     rm("settings", pos=1)
   }
-  expect_error(encryptDataDS(123,134), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS("123","134"), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS(TRUE,"134"), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS("123",FALSE), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS(123,134), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS("123","134"), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS(TRUE,"134"), "SERVER::ERR::PARAM::002")
-  expect_error(encryptDataDS(FALSE,FALSE), "SERVER::ERR::PARAM::001")
+  expect_error(encryptDataDS(123,134))
+  expect_error(encryptDataDS("123","134"))
+  expect_error(encryptDataDS(TRUE,"134"))
+  expect_error(encryptDataDS("123",FALSE))
+  expect_error(encryptDataDS(123,134))
+  expect_error(encryptDataDS("123","134"))
+  expect_error(encryptDataDS(TRUE,"134"))
+  expect_error(encryptDataDS(FALSE,FALSE))
 })
 
 
@@ -36,7 +36,7 @@ assignSharingSettingsDS()
 context("encryptDataDS::expt::not_allowed_to_share")
 test_that("not_allowed_to_take_part",
 {
-  expect_error(encryptDataDS(TRUE, FALSE),"SERVER::ERR::PARAM::001")
+  expect_error(encryptDataDS(TRUE, FALSE))
 })
 
 set.default.options.not.restrictive()

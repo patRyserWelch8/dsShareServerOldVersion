@@ -26,6 +26,6 @@ assignTransfertSettingsDS <- function(current.row = NULL)
   }
   else
   {
-    stop("SERVER::ERR::PARAM::001")
+    stop("SERVER::ERR::SHARING::001")
   }
 }

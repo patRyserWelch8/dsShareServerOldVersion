@@ -1,5 +1,5 @@
 ---
-title: "dsShareServer"
+title: "dsShareServer Server Package for DataSHIELD platform"
 author: "Patricia Ryser-Welch for the DataSHIELD team"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -17,53 +17,92 @@ knitr::opts_chunk$set(
 ```
 
 # Purpose of the package
-This package aims at providing the _server-side functions_ sharing encoded information between DataSHIELD servers. The functions allows some data encoded in dataframes to be transferred to a DataSHIELD client. 
+This package aims at providing the _server-side functions_ sharing _encoded_ information between DataSHIELD servers. This package has twofold. 
+
+Firstly, some functions allow some data encoded in data frames to be transferred to a DataSHIELD client. The inspiration behind some functions arises from database connectivity API; some of the commands such as _next_, _EndOfFile_ let's have access to queries' results. In this package, an addition feature **checks no original data can be transferred to the client.**  
+
+Secondly, some other functions offer the opportunity to encode some server-side scalar values and transfer them in a privacy-preserving manner between some servers. 
 
 
 # Data governance
-Some parametrisation needs to be setup by the data governers to set the behaviour of some function.
+Some parametrisation needs to be setup by the data governers to set the behaviour of some functions. All these options can be set on a DataSHIELD server. Some options have therefore been added:
+
+## param.name.struct
+**Purpose  : **       sets the name of a R object used during the scalar encoding process.
+**Data Type: **       character
+**Default value :**   sharing
 
 
+## transfer.name.struct
+**Purpose  : **       sets the name of a R object used during the transfer of encoded values.
+**Data Type: **       character
+**Default value :**   transfer
+
+## sharing.allowed
+**Purpose  : **       Allows the sharing of data from one server or not.
+**Data Type: **       boolean (values set to 1 - TRUE or 0 - FALSE)
+**Default value :**   1 
+
+##sharing.near.equal.limit
+**Purpose  : **       Indicates the minimum difference between some original values and some encoded values
+**Data Type: **       integer
+**Default value :**   1000 
 
 
-## Vignette Info
+# Structure of the package
+The package makes available to the parser the following functions. Documentation has been produced as a manual.
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+* assignCoordinatesDS
+* assignDataDS
+* assignParamSettingsDS
+* getDataDS
+* getCoordinatesDS
+* assignSharingSettingsDS
+* decryptDataDS
+* encryptDataDS
+* decryptParamDS
+* encryptParamDS
+* removeEncryptingDataDS
+* removeExchangeDataDS
+* isDataEncodedDS
+* nextDS
+* isEndOfDataDS
 
-## Styles
+# Server errors 
+The package throws the following errors. Some explanations are provided below.
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+## SERVER::ERR::SHARING::001
+**Purpose:** stops the execution of a server function if _sharing.allowed option_ is set to 0 (FALSE)
+**Solution:** request for the data governance to allow this package to execute on a DataSHIELD server
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+## SERVER::ERR::SHARING::002
+**Purpose:** stops the execution of a server function, when its arguments are not correct.
+**Solution:** checks the call from the client to a suitable solution
 
-## Figures
+## SERVER::ERR::SHARING::003
+**Purpose:** stops the execution of a server function, when the settings list has not been created.
+**Solution:** the assignSharingSettings has been called from the client
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+## SERVER::ERR::SHARING::004
+**Purpose:**  some formating of the data prior some transfer has been unsuccessful.
+**Solution:** review the process in the client calls to provide suitable information
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
+## SERVER::ERR::SHARING::005
+**Purpose:**  some data have not been formatted incorrectly. The data types of the structure is incorrect.
+**Solution:** check either getDataDS OR getCoordinatesDS has been called before making a suitable server call
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+## SERVER::ERR::SHARING::006
+**Purpose:**  some data have not been formatted incorrectly. The structure is incorrect.
+**Solution:** check either getDataDS OR getCoordinatesDS has been called before making a suitable server call
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+## SERVER::ERR::SHARING::007
+**Purpose:**  some data have been encrypted incorrectly. The data cannot be decrypted.
+**Solution:** check all the previous steps required for the encryption have been completed.
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+## SERVER::ERR::SHARING::008
+**Purpose:**  Some given parameters do not exists on a DataSHIELD server.
+**Solution:** create the scalar again using an assign function and restart the process of sharing the parameters.
 
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+## SERVER::ERR::SHARING::009
+**Purpose:**  some parameters have been encrypted incorrectly. The parameters cannot be decrypted.
+**Solution:** check all the previous steps required for the encryption have been completed.
