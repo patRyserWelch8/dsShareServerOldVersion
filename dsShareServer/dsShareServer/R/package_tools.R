@@ -103,7 +103,7 @@ are.params.created <- function(param_names = c())
 #'@title returns the transfer list if it is correctly setup
 #'@details This is a helper function. It cannot be called directly from any client-side
 #'function.
-#'@notes  Throws error "SERVER::ERR:SHARE::013" if transfer is not created on server.
+#'@note  Throws error "SERVER::ERR:SHARE::013" if transfer is not created on server.
 #'"Throws "SERVER::ERR:SHARE::014" if the transfer list is created on a server, with the incorrect field.
 get.transfer <- function(settings)
 {
@@ -136,7 +136,7 @@ get.transfer <- function(settings)
 #' 2. encoded data exists
 #' 3. encoded data is a data frame
 #' 4. the data encoded is character
-#'@notes Throws the following errors:
+#'@note Throws the following errors:
 #'"SERVER::ERR:SHARE::002"  sharing is not allowed or the disclosure setting has not been set to 0 or 1
 #'"SERVER::ERR:SHARE::005"  data.encoded does not exists on the server
 #'"SERVER::ERR:SHARE::008"  data.encoded is not the same R object as previously validated \source{isDataEncodedDS}

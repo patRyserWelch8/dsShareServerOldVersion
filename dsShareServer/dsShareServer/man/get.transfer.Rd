@@ -13,3 +13,7 @@ returns the transfer list if it is correctly setup
 This is a helper function. It cannot be called directly from any client-side
 function.
 }
+\note{
+Throws error "SERVER::ERR:SHARE::013" if transfer is not created on server.
+"Throws "SERVER::ERR:SHARE::014" if the transfer list is created on a server, with the incorrect field.
+}
