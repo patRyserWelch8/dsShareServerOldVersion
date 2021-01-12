@@ -118,12 +118,12 @@ assignParamSettingsDS <- function(param_names = "")
     }
     else
     {
-      stop("SERVER::ERR::PARAM::008")
+      stop("SERVER::ERR::SHARING::008")
     }
   }
   else
   {
-    stop("SERVER::ERR::PARAM::001")
+    stop("SERVER::ERR::SHARING::001")
   }
 
 }

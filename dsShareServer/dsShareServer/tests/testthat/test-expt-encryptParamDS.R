@@ -15,7 +15,7 @@ test_that("no_setting",
     rm("sharing",pos=1)
   }
   expect_equal(exists("settings",where = 1),FALSE)
-  expect_error(encryptParamDS(),"SERVER::ERR::PARAM::001")
+  expect_error(encryptParamDS())
 })
 
 #These steps are needed to complete the tests.....

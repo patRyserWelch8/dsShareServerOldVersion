@@ -2,12 +2,12 @@
 .get_received_data <- function()
 {
   outcome <- list()
-  
+
   if(exists(settings$name.struct, where =1))
   {
-    outcome <- get(settings$name.struct, pos=1) 
+    outcome <- get(settings$name.struct, pos=1)
   }
-  
+
   return(outcome)
 }
 
@@ -22,8 +22,8 @@
       correct          <- (total.correct == length(expected.list))
       if (correct)
       {
-         correct       <- correct & 
-                          is.matrix(received.data[[settings$masking]]) & 
+         correct       <- correct &
+                          is.matrix(received.data[[settings$masking]]) &
                           is.matrix(received.data[[settings$received]])
       }
   }
@@ -33,20 +33,20 @@
 .decrypt.received.matrix <- function(masking.matrix = NULL, received.matrix = NULL)
 {
   result <- NULL
-  
+
   if(is.matrix(masking.matrix) & is.matrix(received.matrix))
   {
     masking.inverse  <- solve(t(masking.matrix))
     no.col           <- ncol(masking.inverse)
     no.row           <- nrow(received.matrix)
     result           <- matrix(rep(0,no.row * no.col),no.row, no.col)
-   
+
     if (no.row == no.col)
     {
       result <- masking.inverse %*% received.matrix
     }
   }
-  
+
   return(result)
 }
 
@@ -54,14 +54,14 @@
 {
   correct <- FALSE
   sharing       <- get(settings$name.struct,pos=1)
-      
+
   if (is.list(sharing))
   {
         attributes.exist <- names(sharing) %in% expected.list
         total.correct    <- sum(attributes.exist == TRUE)
         correct          <- (total.correct == length(expected.list))
    }
-  
+
   return(correct)
 }
 
@@ -73,25 +73,25 @@ decryptDataDS   <- function()
 {
   outcome       <- FALSE
   expected.list <- c(settings$received,settings$masking, settings$decrypted)
-  
+
   if (is.sharing.allowed())
   {
     sharing <- .get_received_data()
     if(.is.received.data.valid(sharing))
     {
-      sharing[[settings$decrypted]] <- .decrypt.received.matrix(sharing[[settings$masking]], 
+      sharing[[settings$decrypted]] <- .decrypt.received.matrix(sharing[[settings$masking]],
                                                                 sharing[[settings$received]])
       assign("sharing", sharing, pos = 1)
-      outcome                       <- .is.decrypted.data.valid(expected.list)
+      outcome <- .is.decrypted.data.valid(expected.list)
     }
     else
     {
-      stop("SERVER::ERR::PARAM::007")
+      stop("SERVER::ERR::SHARING::007")
     }
   }
   else
   {
-    stop("SERVER::ERR::PARAM::001")
+    stop("SERVER::ERR::SHARING::001")
   }
   return(outcome)
 }

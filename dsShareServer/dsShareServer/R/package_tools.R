@@ -26,8 +26,8 @@ is.sharing.allowed <- function()
 #'@param index - A random number related to the data
 #'@details This is a helper function. It cannot be called directly from any client-side
 #'function.
-#'@seealso \link[dsServerParameter]{getDataDS}, \link[dsServerParameter]{getCoordinatesDS},
-#'\link[dsServerParameter]{encode.data.no.sharing}
+#'@seealso \link[dsShareServer]{getDataDS}, \link[dsShareServer]{getCoordinatesDS},
+#'\link[dsShareServer]{encode.data.no.sharing}
 encode.data.with.sharing <- function(encrypted.data, length, index)
 {
   #remove conversion once new parsers is available
@@ -53,7 +53,7 @@ encode.data.with.sharing <- function(encrypted.data, length, index)
 #'
 #'@details This is a helper function. It cannot be called directly from any client-side
 #'function.
-#'@seealso \link[dsParamServer]{getDataDS} \link[dsParamServer]{getCoordinatesDS},[dsParamServer]{encode.data.no.sharing}
+#'@seealso \link[dsShareServer]{getDataDS} \link[dsShareServer]{getCoordinatesDS},[dsShareServer]{encode.data.no.sharing}
 encode.data.no.sharing <- function()
 {
   header        <- ""

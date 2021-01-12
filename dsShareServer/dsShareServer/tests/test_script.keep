@@ -1,5 +1,5 @@
 options(sharing.near.equal.limit = 1000)
-options(param.sharing.allowed = 1)
+options(sharing.allowed = 1)
 
 vector_A <- c(1:71)
 vector_B <- vector_A * 100000

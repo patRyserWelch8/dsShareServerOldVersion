@@ -1,12 +1,12 @@
 .get.sharing.data <- function()
 {
   outcome <- list()
-  
+
   if(exists(settings$name.struct, where =1))
   {
     if (is.list(get(settings$name.struct, pos=1)))
     {
-      outcome <- get(settings$name.struct, pos=1) 
+      outcome <- get(settings$name.struct, pos=1)
     }
   }
   return(outcome)
@@ -15,11 +15,11 @@
 .is.cleaned.structure.valid <- function(expected.list)
 {
   correct <- FALSE
-  
+
   if(exists("sharing",where=1))
   {
     sharing       <- get("sharing",pos=1)
-    
+
     if (is.list(sharing))
     {
       list.attributes  <- names(sharing)
@@ -44,21 +44,21 @@ removeEncryptingDataDS <- function(master_mode = TRUE)
     sharing                        <- .get.sharing.data()
     if(master_mode)
     {
-        expected.list               <- c(settings$data,settings$no_columns, settings$no_rows, settings$index_x, 
+        expected.list               <- c(settings$data,settings$no_columns, settings$no_rows, settings$index_x,
                                             settings$index_y,settings$param_names)
     }
     else
     {
-      expected.list                  <- c(settings$concealing,settings$no_columns, settings$no_rows, settings$index_x, 
+      expected.list                  <- c(settings$concealing,settings$no_columns, settings$no_rows, settings$index_x,
                                           settings$index_y)
     }
-   
+
     assign("sharing", sharing,pos=1)
     outcome <- .is.cleaned.structure.valid(expected.list)
   }
   else
   {
-    stop("SERVER::ERR::PARAM::001")
+    stop("SERVER::ERR::SHARING::001")
   }
   return(outcome)
 }

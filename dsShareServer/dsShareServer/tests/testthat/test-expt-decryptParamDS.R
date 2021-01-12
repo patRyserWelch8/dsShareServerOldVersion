@@ -16,7 +16,7 @@ test_that("does not exist",
    expect_equal(exists("settings", where = 1), FALSE)
    expect_error(.get.encoded.param())
    expect_error(.is.encoded.param.valid())
-   expect_error(decryptParamDS(), "SERVER::ERR::PARAM::001")
+   expect_error(decryptParamDS())
 
 })
 
@@ -43,7 +43,7 @@ test_that("does exists",
 #("Step 0")
 rm(list=ls(pos = 1),pos=1)
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 1)
+options(sharing.allowed = 1)
 
 #("Step 0")
 assign("pi_value_1", 100.523, pos = 1)
@@ -125,11 +125,12 @@ assign("receiver.5", get("sharing",pos = 1), pos = 1)
 #("step 10")
 decryptDataDS()
 assign("receiver.6", get("sharing",pos=1), pos = 1)
-assign("outcome", decryptParamDS(c("pi_value_1_a", "pi_value_2_a", "pi_value_3_a"),3), pos = 1)
+
 
 context("decryptParamDS::expt::data_has_been_decrypted")
 test_that("data has been encrypted correctly",
 {
+   assign("outcome", decryptParamDS(c("pi_value_1_a", "pi_value_2_a", "pi_value_3_a"),3), pos = 1)
    expect_equal(exists(settings$name.struct, where = 1), TRUE)
    expect_equal(get("outcome", pos = 1), TRUE)
    list.var <- ls(pos = 1)

@@ -6,8 +6,8 @@ test_that("everything is incorrect",
     rm("settings", pos=1)
   }
   expect_equal(exists("settings", where = 1), FALSE)
-  expect_error(assignParamSettingsDS(),"SERVER::ERR::PARAM::001")
-  expect_error(assignParamSettingsDS(123),"SERVER::ERR::PARAM::001")
+  expect_error(assignParamSettingsDS())
+  expect_error(assignParamSettingsDS(123))
   expect_equal(are.params.created(param_names = c("first_var")), FALSE)
   expect_equal(are.params.created(param_names = c("first_var", "second_var")),FALSE)
   expect_equal(are.params.created(param_names = c("first_var", "second_var","third_var")),FALSE)

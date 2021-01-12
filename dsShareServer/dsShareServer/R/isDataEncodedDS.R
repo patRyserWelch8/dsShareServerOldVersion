@@ -252,33 +252,42 @@
 #'
 isDataEncodedDS <- function(data.server = NULL, data.encoded = NULL, data.held.in.server = NULL)
 {
-  is.encoded.data      <- FALSE
-  is.encoded.variable  <- FALSE
-  outcome              <- FALSE
-  param.correct        <- .are.params.correct(data.server, data.encoded, data.held.in.server )
 
-  if(param.correct & is.sharing.allowed())
+
+  if(is.sharing.allowed())
   {
-    # get data from global environment
-    server         <- get(data.server,  pos = 1)
-    encoded        <- get(data.encoded, pos = 1)
-    held.in.server <- get(data.held.in.server, pos = 1)
-    limit          <- getOption("sharing.near.equal.limit")
+    is.encoded.data      <- FALSE
+    is.encoded.variable  <- FALSE
+    outcome              <- FALSE
+    param.correct        <- .are.params.correct(data.server, data.encoded, data.held.in.server )
 
-    if(.check.dimension(server, encoded))
+    if(param.correct)
     {
-      is.encoded.variable <- .check.encoding.variable(server, encoded, limit)
-      if(is.encoded.variable)
+        # get data from global environment
+      server         <- get(data.server,  pos = 1)
+      encoded        <- get(data.encoded, pos = 1)
+      held.in.server <- get(data.held.in.server, pos = 1)
+      limit          <- getOption("sharing.near.equal.limit")
+
+      if(.check.dimension(server, encoded))
       {
-        is.encoded.data <- .check.encoding.data.frames(held.in.server,encoded,limit)
+        is.encoded.variable <- .check.encoding.variable(server, encoded, limit)
+        if(is.encoded.variable)
+        {
+          is.encoded.data <- .check.encoding.data.frames(held.in.server,encoded,limit)
+        }
       }
+      outcome <- is.encoded.data & is.encoded.variable
+      .set.settings(outcome, data.encoded)
     }
-    outcome <- is.encoded.data & is.encoded.variable
-    .set.settings(outcome, data.encoded)
+    else
+    {
+      stop("SERVER::ERR::SHARING::002")
+    }
   }
   else
   {
-    stop("SERVER::ERR:SHARE::002")
+    stop("SERVER::ERR::SHARING::001")
   }
 
   return(outcome)

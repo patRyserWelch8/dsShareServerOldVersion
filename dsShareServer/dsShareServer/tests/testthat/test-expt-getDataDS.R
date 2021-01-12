@@ -6,7 +6,7 @@ rm("settings", pos=1)
 context("getDataDS::expt::no_settings")
 test_that("no_settings",
 {
-  expect_error(getDataDS(master_mode = TRUE), "SERVER::ERR::PARAM::001")
+  expect_error(getDataDS(master_mode = TRUE))
 })
 
 options(param.name.struct = "sharing")

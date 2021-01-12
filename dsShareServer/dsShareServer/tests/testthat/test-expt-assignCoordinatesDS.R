@@ -1,26 +1,27 @@
 source("definition_tests/def_getEncodedDataDS.R")
 source('definition_tests/def_sendEncodedDataDS.R')
+source('options/options_definitions.R')
 
 rm(list=ls(),pos=1)
 
 options(param.name.struct = "sharing")
-options(param.sharing.allowed = 0)
+options(sharing.allowed = 0)
 assignSharingSettingsDS()
 
 context("assignCoordinatesDS::expt:: incorrect parameters::no_coordinates::not_allowed")
 test_that("parameters",
 {
-  expect_error(assignCoordinatesDS(), "SERVER::ERR::PARAM::001")
-  expect_error(assignCoordinatesDS(1), "SERVER::ERR::PARAM::001")
-  expect_error(assignCoordinatesDS("FM1",TRUE), "SERVER::ERR::PARAM::001")
-  expect_error(assignCoordinatesDS("FM1","123,123","WRONG"), "SERVER::ERR::PARAM::001")
-  expect_error(assignCoordinatesDS("FM1","123,123",1,"WRONG" ), "SERVER::ERR::PARAM::001")
-  expect_error(assignCoordinatesDS("FM1","123,123",1,13,"WRING" ), "SERVER::ERR::PARAM::001")
-  expect_error(assignCoordinatesDS("FM1","123,123",1,13,2.3,"INCORRECT" ), "SERVER::ERR::PARAM::001")
+  expect_error(assignCoordinatesDS())
+  expect_error(assignCoordinatesDS(1))
+  expect_error(assignCoordinatesDS("FM1",TRUE))
+  expect_error(assignCoordinatesDS("FM1","123,123","WRONG"))
+  expect_error(assignCoordinatesDS("FM1","123,123",1,"WRONG" ))
+  expect_error(assignCoordinatesDS("FM1","123,123",1,13,"WRING" ))
+  expect_error(assignCoordinatesDS("FM1","123,123",1,13,2.3,"INCORRECT" ))
 })
 
 
-
+set.not.allowed()
 context("assignCoordinatesDS::expt:: correct parameters::no_coordinates::not_allowed")
 test_that("parameters",
 {
@@ -30,7 +31,7 @@ test_that("parameters",
                                    property.a = as.numeric(object.size("0.5,0.5,0.5, 0.5")),
                                    property.b = 2,
                                    property.c = as.numeric(Sys.time()) /567,
-                                   property.d = 134893344), "SERVER::ERR::PARAM::001")
+                                   property.d = 134893344))
 
 })
 
@@ -107,13 +108,13 @@ assign("sharing", receiver.2, pos=1)
 context("assignCoordinatesDS::expt:: incorrect parameters::with_coordinates:: allowed")
 test_that("parameters",
 {
-  expect_error(assignCoordinatesDS(), "SERVER::ERR::PARAM::006")
-  expect_error(assignCoordinatesDS(1), "SERVER::ERR::PARAM::005")
-  expect_error(assignCoordinatesDS("FM1",TRUE), "SERVER::ERR::PARAM::005")
-  expect_error(assignCoordinatesDS("FM1","123,123","WRONG"), "SERVER::ERR::PARAM::005")
-  expect_error(assignCoordinatesDS("FM1","123,123",1,"WRONG" ), "SERVER::ERR::PARAM::005")
-  expect_error(assignCoordinatesDS("FM1","123,123",1,13,"WRING" ), "SERVER::ERR::PARAM::005")
-  expect_error(assignCoordinatesDS("FM1","123,123",1,13,2.3,"INCORRECT" ), "SERVER::ERR::PARAM::005")
+  expect_error(assignCoordinatesDS())
+  expect_error(assignCoordinatesDS(1))
+  expect_error(assignCoordinatesDS("FM1",TRUE))
+  expect_error(assignCoordinatesDS("FM1","123,123","WRONG"))
+  expect_error(assignCoordinatesDS("FM1","123,123",1,"WRONG" ))
+  expect_error(assignCoordinatesDS("FM1","123,123",1,13,"WRING" ))
+  expect_error(assignCoordinatesDS("FM1","123,123",1,13,2.3,"INCORRECT" ))
 })
 
 context("assignCoordinatesDS::expt:: correct parameters::with_coordinates")

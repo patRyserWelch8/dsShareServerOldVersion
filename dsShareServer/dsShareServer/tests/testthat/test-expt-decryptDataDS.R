@@ -26,7 +26,7 @@ test_that("not_allowed",
    expect_error(.is.received.data.valid())
    expect_equal(.decrypt.received.matrix(), NULL)
    expect_error(.is.decrypted.data.valid())
-   expect_error(decryptDataDS(),"SERVER::ERR::PARAM::001")
+   expect_error(decryptDataDS())
 })
 
 options(param.name.struct = "sharing")
