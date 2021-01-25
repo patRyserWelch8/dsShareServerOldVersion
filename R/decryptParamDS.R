@@ -45,14 +45,19 @@
   no.params <- length(params)
   rows      <- ceiling(sharing[[settings$index_x]] * sharing[[settings$no_columns]])
   columns   <- ceiling(sharing[[settings$index_y]] * sharing[[settings$no_rows]])
-
+  print(rows)
+  print(columns)
+  print(sharing[[settings$no_columns]])
+  print(sharing[[settings$no_rows]])
   #those are swapped due to transpose in encoding process
   for(index in 1:no.params)
   {
-
-    param_name  <- params[index]
-    param.value <-  round(sharing$decrypted[columns[index],rows[index]], tolerance)
-    assign(param_name,param.value, pos = 1)
+    if (columns[index]  <=  ncol(sharing$decrypted) & rows[index] <= nrow(sharing$decrypted))
+    {
+      param_name  <- params[index]
+      param.value <-  round(sharing$decrypted[columns[index],rows[index]], tolerance)
+     assign(param_name,param.value, pos = 1)
+    }
   }
   outcome <- !is.na(param.value)
   return(outcome)

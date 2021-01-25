@@ -36,8 +36,8 @@
     random.number <- runif (1, min = 1, max = 10^6)
 
     set.seed(sys.time/random.number)
-    sharing[[settings$index_x]]     <- .generate.ratios(no.elements = length(param_names), coordinate = sharing[[settings$no_columns]])
-    sharing[[settings$index_y]]     <- .generate.ratios(no.elements = length(param_names), coordinate = sharing[[settings$no_rows]])
+    sharing[[settings$index_x]]     <- .generate.ratios(no.elements = length(param_names), coordinate = sharing[[settings$no_columns]] - 1)
+    sharing[[settings$index_y]]     <- .generate.ratios(no.elements = length(param_names), coordinate = sharing[[settings$no_rows]] - 1)
     sharing[[settings$param_names]] <- param_names
 
 

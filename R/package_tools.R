@@ -74,6 +74,7 @@ encode.data.no.sharing <- function()
 
 #'@name are.params.created
 #'@title check the some variables considered as parameters are created on a server
+#'@param param_names names of params
 #'@details This is a helper function. It cannot be called directly from any client-side
 #'function.
 are.params.created <- function(param_names = c())
