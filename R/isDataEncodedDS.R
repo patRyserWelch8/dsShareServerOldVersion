@@ -59,8 +59,8 @@
     }
     else
     {
-      t    <- t.test(server, encoded, conf.level = 0.99, na.action=na.omit)
-      mann <- wilcox.test(server, encoded, conf.level = 0.99)
+      t    <- stats::t.test(server, encoded, conf.level = 0.99, na.action=stats::na.omit)
+      mann <- stats::wilcox.test(server, encoded, conf.level = 0.99)
       outcome <- t$p.value >= 0.01 || mann$p.value >= 0.01
     }
   }

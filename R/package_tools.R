@@ -33,7 +33,7 @@ encode.data.with.sharing <- function(encrypted.data, length, index)
   #remove conversion once new parsers is available
   header        <- ""
   data          <- as.character(paste(as.numeric(encrypted.data),sep="",collapse=";"))
-  size          <- as.numeric(object.size(data))
+  size          <- as.numeric(utils::object.size(data))
   timestamp     <- as.numeric(Sys.time()) / size
 
   return.value  <- list(header = "FM1" ,
