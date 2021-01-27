@@ -58,7 +58,7 @@ encode.data.no.sharing <- function()
 {
   header        <- ""
   data          <- as.character(paste(stats::runif(11 *13, 100000, 400000),sep="", collapse=";"))
-  size          <- as.numeric(object.size(data))
+  size          <- as.numeric(utils::object.size(data))
   no.columns    <- as.integer(stats::runif(1, min=settings$min_rows, max=settings$max_rows))
   no.rows       <- as.integer(stats::runif(1, min=settings$min_columns, max=settings$max_columns))
   index         <- ceiling(stats::runif(1, min = 0, max = no.columns))
@@ -104,6 +104,7 @@ are.params.created <- function(param_names = c())
 #'@title returns the transfer list if it is correctly setup
 #'@details This is a helper function. It cannot be called directly from any client-side
 #'function.
+#'@param settings some settings
 #'@note  Throws error "SERVER::ERR:SHARE::013" if transfer is not created on server.
 #'"Throws "SERVER::ERR:SHARE::014" if the transfer list is created on a server, with the incorrect field.
 get.transfer <- function(settings)
@@ -137,7 +138,7 @@ get.transfer <- function(settings)
 #' 2. encoded data exists
 #' 3. encoded data is a data frame
 #' 4. the data encoded is character
-#' @param data.encoded some encoded data
+#'@param data.encoded some encoded data
 #'@note Throws the following errors:
 #'"SERVER::ERR:SHARE::002"  sharing is not allowed or the disclosure setting has not been set to 0 or 1
 #'"SERVER::ERR:SHARE::005"  data.encoded does not exists on the server

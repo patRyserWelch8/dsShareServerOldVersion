@@ -34,6 +34,7 @@
 #'@name removeEncryptingDataDS
 #'@title Remove data used to encrypt some parameters
 #'@description This server function can be used to remove the data used to encrypt a parameter between
+#'@param master_mode a boolean argument set to true by default
 #'a two servers
 #'@export
 removeEncryptingDataDS <- function(master_mode = TRUE)
