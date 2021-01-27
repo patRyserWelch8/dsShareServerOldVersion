@@ -7,6 +7,9 @@
 \usage{
 are.arg.and.settings.suitable(data.encoded)
 }
+\arguments{
+\item{data.encoded}{some encoded data}
+}
 \description{
 It checks the sharing for the following criteria:
 0. sharing is allowed

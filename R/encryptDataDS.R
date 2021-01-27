@@ -248,8 +248,8 @@
 .encrypt.data <- function(master_mode, preserve_mode)
 {
   #init variables
-  MIN            <- runif(1, min=settings$min_value, max  = settings$min_value + 20)
-  MAX            <- runif(1, min=settings$min_value+30, max = settings$min_value + 40)
+  MIN            <- stats::runif(1, min=settings$min_value, max  = settings$min_value + 20)
+  MAX            <- stats::runif(1, min=settings$min_value+30, max = settings$min_value + 40)
   data           <- NULL
 
   expected.list  <- c()

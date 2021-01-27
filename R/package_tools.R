@@ -57,7 +57,7 @@ encode.data.with.sharing <- function(encrypted.data, length, index)
 encode.data.no.sharing <- function()
 {
   header        <- ""
-  data          <- as.character(paste(runif(11 *13, 100000, 400000),sep="", collapse=";"))
+  data          <- as.character(paste(stats::runif(11 *13, 100000, 400000),sep="", collapse=";"))
   size          <- as.numeric(object.size(data))
   no.columns    <- as.integer(stats::runif(1, min=settings$min_rows, max=settings$max_rows))
   no.rows       <- as.integer(stats::runif(1, min=settings$min_columns, max=settings$max_columns))
@@ -137,6 +137,7 @@ get.transfer <- function(settings)
 #' 2. encoded data exists
 #' 3. encoded data is a data frame
 #' 4. the data encoded is character
+#' @param data.encoded some encoded data
 #'@note Throws the following errors:
 #'"SERVER::ERR:SHARE::002"  sharing is not allowed or the disclosure setting has not been set to 0 or 1
 #'"SERVER::ERR:SHARE::005"  data.encoded does not exists on the server
