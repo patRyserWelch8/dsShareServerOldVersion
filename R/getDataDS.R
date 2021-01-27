@@ -18,7 +18,7 @@
         no.rows    >= settings$min_rows)
     {
       encrypted.data <- as.numeric(sharing[[settings$encrypted]])
-      index <- runif(1, min =settings$min_rows, max= settings$max_rows)
+      index <- stats::runif(1, min =settings$min_rows, max= settings$max_rows)
       return(encode.data.with.sharing(encrypted.data, no.columns, index))
     }
   }

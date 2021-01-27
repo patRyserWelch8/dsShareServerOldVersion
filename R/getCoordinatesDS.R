@@ -14,11 +14,11 @@
       {
         data           <- c(sharing[[settings$index_x]],sharing[[settings$index_y]])
         no.params      <- length(sharing[[settings$index_x]])
-        random.data    <- runif((settings$min_rows * settings$min_columns) + 1 - (2 * no.params), min = 0, max = 2)
+        random.data    <- stats::runif((settings$min_rows * settings$min_columns) + 1 - (2 * no.params), min = 0, max = 2)
         encrypted.data <- c(random.data[1:(length(random.data)/2)],
                             data,
                             random.data[((length(random.data)/2)+1):length(random.data)])
-        index <- runif(1, min = 1, max= 100)
+        index <- stats::runif(1, min = 1, max= 100)
         return.value <- encode.data.with.sharing(encrypted.data, length(sharing[[settings$index_x]]), index)
       }
     }

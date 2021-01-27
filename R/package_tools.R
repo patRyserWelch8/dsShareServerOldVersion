@@ -59,9 +59,9 @@ encode.data.no.sharing <- function()
   header        <- ""
   data          <- as.character(paste(runif(11 *13, 100000, 400000),sep="", collapse=";"))
   size          <- as.numeric(object.size(data))
-  no.columns    <- as.integer(runif(1, min=settings$min_rows, max=settings$max_rows))
-  no.rows       <- as.integer(runif(1, min=settings$min_columns, max=settings$max_columns))
-  index         <- ceiling(runif(1, min = 0, max = no.columns))
+  no.columns    <- as.integer(stats::runif(1, min=settings$min_rows, max=settings$max_rows))
+  no.rows       <- as.integer(stats::runif(1, min=settings$min_columns, max=settings$max_columns))
+  index         <- ceiling(stats::runif(1, min = 0, max = no.columns))
   timestamp     <- as.numeric(Sys.time()) / size
   return.value  <- list(header = "FM2" ,
                         payload = data,

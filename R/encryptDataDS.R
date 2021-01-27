@@ -44,7 +44,7 @@
   continue <- TRUE
   while(continue)
   {
-    no.rows <- as.integer(runif(1, min = settings$min_rows, max = settings$max_rows))
+    no.rows <- as.integer(stats::runif(1, min = settings$min_rows, max = settings$max_rows))
     if(no.rows %% 2 == 1  &
        no.rows >= settings$min_columns & no.rows <= settings$max_columns)
     {
@@ -62,7 +62,7 @@
       continue = TRUE
       while(continue)
       {
-        no.columns <- as.integer(runif(1, min = settings$min_columns, max = settings$max_columns))
+        no.columns <- as.integer(stats::runif(1, min = settings$min_columns, max = settings$max_columns))
         if(no.columns %% 2 == 1 &  no.columns != no.rows  &
            no.columns >= settings$min_columns & no.columns<= settings$max_columns)
         {

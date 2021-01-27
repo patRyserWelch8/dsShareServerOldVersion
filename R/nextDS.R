@@ -28,7 +28,7 @@
     # prepare for transfer
     names(encoded)  <- NULL
     data            <- as.numeric(unlist(encoded[c(start:end),]))
-    index           <- runif(1, min = .Machine$double.xmin, max  = .Machine$double.xmax)
+    index           <- stats::runif(1, min = .Machine$double.xmin, max  = .Machine$double.xmax)
     transfer.data   <- encode.data.with.sharing(data, ncol(encoded), index)
 
     # update transfer
