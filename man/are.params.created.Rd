@@ -6,6 +6,9 @@
 \usage{
 are.params.created(param_names = c())
 }
+\arguments{
+\item{param_names}{names of params}
+}
 \description{
 check the some variables considered as parameters are created on a server
 }
