@@ -6,7 +6,10 @@
 \usage{
 removeEncryptingDataDS(master_mode = TRUE)
 }
+\arguments{
+\item{master_mode}{a boolean argument set to true by default
+a two servers}
+}
 \description{
 This server function can be used to remove the data used to encrypt a parameter between
-a two servers
 }

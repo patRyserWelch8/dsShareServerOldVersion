@@ -6,6 +6,9 @@
 \usage{
 get.transfer(settings)
 }
+\arguments{
+\item{settings}{some settings}
+}
 \description{
 returns the transfer list if it is correctly setup
 }
