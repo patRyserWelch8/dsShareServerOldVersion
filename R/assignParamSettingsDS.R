@@ -18,7 +18,7 @@
 
   while(!stop)
   {
-     outcome   <- as.vector(runif(no.elements, min = 0.01, max = 0.99))
+     outcome   <- as.vector(stats::runif(no.elements, min = 0.01, max = 0.99))
      values    <- ceiling(outcome * coordinate)
      no.levels <- length(levels(factor(values)))
      stop <- (no.levels == no.elements)
